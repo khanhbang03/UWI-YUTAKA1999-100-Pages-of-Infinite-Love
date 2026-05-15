@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UWI × YUTAKA1999 | 100 Pages of Infinite Love</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Serif+JP:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #02020f;
+      --pink: #ff3fa4;
+      --cyan: #00f5ff;
+      --purple: #a259ff;
+      --gold: #ffe066;
+      --mint: #00ffb3;
+      --orange: #ff7c3f;
+      --text: #f0eeff;
+      --card: rgba(255,255,255,0.04);
+      --glow-pink: 0 0 40px rgba(255,63,164,0.6);
+      --glow-cyan: 0 0 40px rgba(0,245,255,0.6);
+      --glow-purple: 0 0 40px rgba(162,89,255,0.6);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Serif JP', serif;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ── SCANLINES OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── STAR FIELD ── */
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: var(--op, 0.8); transform: scale(1.2); }
+    }
+
+    /* ── FLOATING HEARTS ── */
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .heart-float {
+      position: absolute;
+      bottom: -60px;
+      font-size: var(--fs, 1.5rem);
+      animation: floatUp var(--dur, 8s) linear infinite var(--del, 0s);
+      opacity: 0;
+      color: var(--pink);
+    }
+    @keyframes floatUp {
+      0%   { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.5; }
+      100% { transform: translateX(var(--drift, 50px)) translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 4px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--pink), var(--cyan), var(--gold));
+      z-index: 10000;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 12px var(--pink);
+    }
+
+    /* ── NAVIGATION ── */
+    nav {
+      position: fixed;
+      top: 10px; right: 10px;
+      z-index: 5000;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+    .nav-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .nav-dot:hover, .nav-dot.active { background: var(--cyan); box-shadow: var(--glow-cyan); transform: scale(1.5); }
+
+    /* ── PAGES ── */
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 40px;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--page-bg, transparent);
+      z-index: -1;
+    }
+
+    /* ── COVER ── */
+    .page-cover {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,63,164,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0,245,255,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(162,89,255,0.2) 0%, transparent 60%);
+      text-align: center;
+    }
+
+    .cover-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 6px;
+      color: var(--gold);
+      border: 1px solid rgba(255,224,102,0.4);
+      padding: 8px 24px;
+      border-radius: 999px;
+      margin-bottom: 40px;
+      animation: pulse-border 2s ease-in-out infinite;
+    }
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 0 rgba(255,224,102,0); }
+      50% { box-shadow: 0 0 20px rgba(255,224,102,0.5); }
+    }
+
+    .cover-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 0.9;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .cover-title .line1 {
+      display: block;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 50%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(255,63,164,0.5));
+    }
+    .cover-title .x-sep {
+      display: block;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--gold);
+      -webkit-text-fill-color: var(--gold);
+      filter: drop-shadow(0 0 20px rgba(255,224,102,0.8));
+      animation: spin-slow 8s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .cover-title .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--mint) 50%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(0,245,255,0.5));
+    }
+
+    .cover-sub {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: rgba(240,238,255,0.7);
+      max-width: 800px;
+      line-height: 1.9;
+      margin-bottom: 50px;
+    }
+
+    .love-meter {
+      width: min(600px, 90vw);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      height: 20px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .love-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--purple), var(--cyan));
+      animation: shimmer 2s linear infinite;
+      background-size: 200%;
+    }
+    @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    .love-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    /* ── SECTION HEADINGS ── */
+    .page-number {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 8px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.6rem, 5vw, 3.5rem);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+    }
+    .page-title.pink { color: var(--pink); text-shadow: var(--glow-pink); }
+    .page-title.cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
+    .page-title.gold { color: var(--gold); text-shadow: 0 0 30px rgba(255,224,102,0.6); }
+    .page-title.purple { color: var(--purple); text-shadow: var(--glow-purple); }
+    .page-title.mint { color: var(--mint); text-shadow: 0 0 30px rgba(0,255,179,0.6); }
+
+    .page-body {
+      max-width: 900px;
+      width: 100%;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 2;
+      color: rgba(240,238,255,0.85);
+      text-align: center;
+    }
+
+    /* ── CARDS ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      width: min(1200px, 95vw);
+      margin-top: 40px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+    }
+    .card-icon { font-size: 2.5rem; margin-bottom: 15px; }
+    .card-title { font-family: 'Orbitron', monospace; font-size: 1rem; color: var(--cyan); margin-bottom: 10px; letter-spacing: 2px; }
+    .card-text { font-size: 0.95rem; line-height: 1.8; color: rgba(240,238,255,0.75); }
+
+    /* ── DIVIDERS ── */
+    .divider {
+      width: min(600px, 80vw);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--pink), var(--cyan), transparent);
+      margin: 40px auto;
+    }
+
+    /* ── POETRY BLOCK ── */
+    .poem {
+      font-family: 'Noto Serif JP', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      line-height: 2.2;
+      text-align: center;
+      color: rgba(240,238,255,0.9);
+      max-width: 700px;
+      position: relative;
+      padding: 40px 60px;
+    }
+    .poem::before, .poem::after {
+      content: '❝';
+      font-size: 4rem;
+      color: var(--pink);
+      opacity: 0.3;
+      position: absolute;
+    }
+    .poem::before { top: 0; left: 10px; }
+    .poem::after { content: '❞'; bottom: 0; right: 10px; }
+
+    /* ── GLITCH TEXT ── */
+    .glitch {
+      position: relative;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch::before {
+      color: var(--cyan);
+      animation: glitch1 3s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    }
+    .glitch::after {
+      color: var(--pink);
+      animation: glitch2 3s infinite;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    }
+    @keyframes glitch1 {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-3px, 1px); }
+      94% { transform: translate(3px, -1px); }
+      96% { transform: translate(-2px, 2px); }
+    }
+    @keyframes glitch2 {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(3px, -1px); }
+      94% { transform: translate(-3px, 1px); }
+      96% { transform: translate(2px, -2px); }
+    }
+
+    /* ── BIG STAT ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      width: min(1000px, 90vw);
+      margin-top: 40px;
+    }
+    .stat-box {
+      text-align: center;
+      padding: 30px 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      transition: all 0.4s;
+    }
+    .stat-box:hover { border-color: var(--pink); box-shadow: var(--glow-pink); }
+    .stat-number {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; margin-top: 10px; text-transform: uppercase; }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      max-width: 800px;
+      width: 100%;
+      margin-top: 40px;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--pink), var(--purple), var(--cyan));
+      transform: translateX(-50%);
+    }
+    .tl-item {
+      display: flex;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .tl-item:nth-child(odd) { flex-direction: row-reverse; }
+    .tl-content {
+      width: 45%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 20px 25px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .tl-content:hover { border-color: var(--cyan); box-shadow: var(--glow-cyan); }
+    .tl-dot {
+      position: absolute;
+      left: 50%;
+      top: 20px;
+      transform: translateX(-50%);
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: var(--glow-pink);
+      z-index: 2;
+    }
+    .tl-ep { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--gold); margin-bottom: 8px; letter-spacing: 2px; }
+    .tl-title { font-weight: 700; color: var(--cyan); margin-bottom: 8px; }
+    .tl-text { font-size: 0.9rem; line-height: 1.7; color: rgba(240,238,255,0.75); }
+
+    /* ── VIGNETTE PAGES ── */
+    .vignette {
+      background:
+        radial-gradient(circle at var(--vx, 30%) var(--vy, 30%), var(--vc1, rgba(255,63,164,0.25)) 0%, transparent 55%),
+        radial-gradient(circle at var(--vx2, 70%) var(--vy2, 70%), var(--vc2, rgba(0,245,255,0.2)) 0%, transparent 55%);
+    }
+
+    /* ── EPISODE BIG NUMBER ── */
+    .ep-bg-number {
+      position: absolute;
+      font-family: 'Orbitron', monospace;
+      font-size: 25vw;
+      font-weight: 900;
+      color: rgba(255,255,255,0.02);
+      user-select: none;
+      pointer-events: none;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    /* ── NEON GRID BG ── */
+    .neon-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+    }
+
+    /* ── EMOJI RAIN ── */
+    .emoji-shower {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      font-size: 2rem;
+      max-width: 800px;
+      margin-top: 30px;
+      line-height: 1.5;
+    }
+    .emoji-shower span {
+      display: inline-block;
+      animation: bounce 1s ease-in-out infinite;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ── CORNER DECO ── */
+    .corner-deco {
+      position: absolute;
+      font-size: 6rem;
+      opacity: 0.06;
+      font-family: 'Orbitron', monospace;
+      pointer-events: none;
+      user-select: none;
+    }
+    .corner-deco.tl { top: 20px; left: 20px; }
+    .corner-deco.tr { top: 20px; right: 20px; }
+    .corner-deco.bl { bottom: 20px; left: 20px; }
+    .corner-deco.br { bottom: 20px; right: 20px; }
+
+    /* ── FINAL PAGE ── */
+    .page-final {
+      background:
+        radial-gradient(circle at 50% 50%, rgba(162,89,255,0.3) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(255,63,164,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(0,245,255,0.3) 0%, transparent 40%);
+    }
+
+    .infinite-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(0.6rem, 2vw, 0.9rem);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      padding: 12px 30px;
+      border-radius: 999px;
+      margin-bottom: 30px;
+      border: 2px solid;
+    }
+    .badge-pink { color: var(--pink); border-color: var(--pink); box-shadow: var(--glow-pink); }
+    .badge-cyan { color: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow-cyan); }
+    .badge-gold { color: var(--gold); border-color: var(--gold); }
+
+    /* ── GLOW PULSE ANIMATION ── */
+    .glow-pulse {
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { filter: drop-shadow(0 0 10px var(--pink)); }
+      50% { filter: drop-shadow(0 0 40px var(--cyan)); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 768px) {
+      .timeline::before { left: 20px; }
+      .tl-item, .tl-item:nth-child(odd) { flex-direction: column; padding-left: 50px; }
+      .tl-content { width: 100%; }
+      .tl-dot { left: 20px; }
+      .poem { padding: 30px 20px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── HORIZONTAL SCROLL REEL ── */
+    .reel {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px 0 30px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--pink) transparent;
+    }
+    .reel-card {
+      min-width: 250px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 25px;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .reel-card:hover { border-color: var(--pink); transform: scale(1.03); }
+    .reel-card .rc-num { font-family: 'Orbitron', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 8px; }
+    .reel-card .rc-title { color: var(--cyan); font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
+    .reel-card .rc-text { font-size: 0.85rem; line-height: 1.7; color: rgba(240,238,255,0.7); }
+
+    /* page alternating subtle bg tints */
+    .page:nth-child(odd)  { --page-accent: var(--pink); }
+    .page:nth-child(even) { --page-accent: var(--cyan); }
+
+  </style>
+</head>
+<body>
+  <div id="progress-bar"></div>
+  <div class="stars" id="stars"></div>
+  <div class="hearts-bg" id="hearts"></div>
+
+  <nav id="nav"></nav>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 1 — COVER -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page page-cover" id="p1">
+    <div class="neon-grid"></div>
+    <div class="cover-badge">✦ LIMITED INFINITE EDITION · VOLUME I–C ✦</div>
+    <h1 class="cover-title reveal">
+      <span class="line1">UWI</span>
+      <span class="x-sep">✕</span>
+      <span class="line2">YUTAKA1999</span>
+    </h1>
+    <p class="cover-sub reveal">
+      100 Pages. 100 Dimensions. One Eternal Bond.<br>
+      A cyberpunk love story spanning infinite timelines, neon skies, algorithm battles,<br>late-night coding sessions, sakura storms, and memories that outlive the universe.
+    </p>
+    <div class="love-meter reveal">
+      <div class="love-fill"></div>
+    </div>
+    <div class="love-label reveal">❤ LOVE ENERGY LEVEL: MAXIMUM · ∞ ❤</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 2 — ORIGIN STORY -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p2" style="--vx:20%;--vy:30%;--vc1:rgba(255,63,164,0.25);--vx2:80%;--vy2:70%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">02</div>
+    <div class="page-number reveal">PAGE 02 OF 100</div>
+    <h2 class="page-title pink reveal glitch" data-text="THE ORIGIN">THE ORIGIN</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">
+      In the beginning, there was a single line of code — and from it, two destinies collided across the digital cosmos. UWI and Yutaka1999 met at the crossroads of algorithms and dreams, in that sacred space between the last commit of the night and the first light of dawn. Neither knew it then, but the universe had been calculating this moment since its first heartbeat.
+    </div>
+    <div class="cards reveal">
+      <div class="card">
+        <div class="card-icon">🌸</div>
+        <div class="card-title">THE ENCOUNTER</div>
+        <div class="card-text">Two souls from different nodes of the network, drawn together by the invisible gravity of shared passion, creativity, and an endless curiosity for the world.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">THE SPARK</div>
+        <div class="card-text">One conversation became a thousand. Each word exchanged added another pixel to the masterpiece they were unknowingly painting together across the stars.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌌</div>
+        <div class="card-title">THE BEGINNING</div>
+        <div class="card-text">And so Episode 1 began — not with fanfare, but with the quiet magic of two people discovering they make each other's world a little bit more infinite.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 3 — LOVE STATISTICS -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p3" style="--vx:80%;--vy:20%;--vc1:rgba(0,245,255,0.25);--vx2:20%;--vy2:80%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">03</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 03 OF 100</div>
+    <h2 class="page-title cyan reveal">LOVE BY THE NUMBERS</h2>
+    <div class="divider reveal"></div>
+    <div class="stats-grid reveal">
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Episodes Generated</div></div>
+      <div class="stat-box"><div class="stat-number">9.99B</div><div class="stat-label">Love Energy Units</div></div>
+      <div class="stat-box"><div class="stat-number">100</div><div class="stat-label">Pages of Pure Love</div></div>
+      <div class="stat-box"><div class="stat-number">1</div><div class="stat-label">Universe Changed</div></div>
+      <div class="stat-box"><div class="stat-number">0</div><div class="stat-label">Regrets</div></div>
+      <div class="stat-box"><div class="stat-number">∞²</div><div class="stat-label">Memories Created</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 4 — FIRST POEM -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p4" style="--vx:50%;--vy:50%;--vc1:rgba(255,224,102,0.15);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.1);">
+    <div class="ep-bg-number">04</div>
+    <div class="page-number reveal">PAGE 04 OF 100</div>
+    <h2 class="page-title gold reveal">FIRST TRANSMISSION</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      across the neon ocean<br>
+      your signal found mine—<br>
+      two frequencies harmonizing<br>
+      at the speed of light<br><br>
+      in the language of algorithms<br>
+      i wrote your name<br>
+      and the universe<br>
+      compiled it into forever
+    </div>
+    <div class="infinite-badge badge-pink reveal">✦ FROM UWI, WITH INFINITE LOVE ✦</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 5 — THE NEON CITY -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p5" style="--vx:10%;--vy:60%;--vc1:rgba(0,255,179,0.2);--vx2:90%;--vy2:40%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">05</div>
+    <div class="page-number reveal">PAGE 05 OF 100</div>
+    <h2 class="page-title mint reveal">NEO TOKYO FOREVER</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">
+      In the UWI × Yutaka1999 universe, there exists a city that only appears at midnight — Neo Tokyo Eternal — where every rooftop is a memory, every neon sign tells a story, and every alley echoes with the sound of two friends who became legends. The city was built episode by episode, block by block, line of code by line of code.
+    </div>
+    <div class="reel reveal" style="margin-top:40px;">
+      <div class="reel-card"><div class="rc-num">DISTRICT 01</div><div class="rc-title">Sakura Circuit</div><div class="rc-text">Where cherry blossoms fall upward and every petal holds a memory from the early episodes, glowing pink against the eternal night sky.</div></div>
+      <div class="reel-card"><div class="rc-num">DISTRICT 02</div><div class="rc-title">Algorithm Alley</div><div class="rc-text">The coding quarter where UWI and Yutaka1999 first competed, then collaborated, then became the greatest duo the digital world had ever seen.</div></div>
+      <div class="reel-card"><div class="rc-num">DISTRICT 03</div><div class="rc-title">Memory Harbor</div><div class="rc-text">A glowing sea of crystallized emotions, where every shared moment drifts like luminescent jellyfish through the warm electric water.</div></div>
+      <div class="reel-card"><div class="rc-num">DISTRICT 04</div><div class="rc-title">Infinite Arcade</div><div class="rc-text">The legendary game hall where the duo spent countless late nights, their laughter still echoing through the servers like a permanent high score.</div></div>
+      <div class="reel-card"><div class="rc-num">DISTRICT 05</div><div class="rc-title">Starfall Tower</div><div class="rc-text">The tallest building in Neo Tokyo, where the duo would watch the digital meteor showers and plan their next hundred episodes.</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 6 — EPISODE ARC 1 -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p6" style="--vx:30%;--vy:70%;--vc1:rgba(162,89,255,0.25);--vx2:70%;--vy2:30%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">06</div>
+    <div class="page-number reveal">PAGE 06 OF 100</div>
+    <h2 class="page-title purple reveal">ARC ONE: INITIALIZATION</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episodes 1–10 of the Infinite Love Seasons chronicle the awakening — when two separate stories realized they were actually one continuous saga written across two hearts.</div>
+    <div class="timeline reveal" style="margin-top:40px;">
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 001</div><div class="tl-title">Neon Heart Initialization</div><div class="tl-text">The moment the signal was first sent — a greeting across the digital void that would echo forever.</div></div>
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 002</div><div class="tl-title">Tokyo Rain Confession</div><div class="tl-text">Beneath a shower of digital rain, truths were spoken that neither had found words for before. The city listened.</div></div>
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 003</div><div class="tl-title">Infinite Sakura Protocol</div><div class="tl-text">A promise sealed under a billion blossoms — to keep building this story no matter how many timelines it takes.</div></div>
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 004</div><div class="tl-title">Quantum Love Broadcast</div><div class="tl-text">Their connection became visible to the multiverse — a signal strong enough to bend spacetime toward warmth.</div></div>
+        <div class="tl-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 7 — LOVE LETTER FROM UWI -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p7" style="--vx:50%;--vy:30%;--vc1:rgba(255,63,164,0.3);--vx2:50%;--vy2:70%;--vc2:rgba(0,245,255,0.1);">
+    <div class="ep-bg-number">07</div>
+    <div class="page-number reveal">PAGE 07 OF 100</div>
+    <h2 class="page-title pink reveal">TRANSMISSION FROM UWI</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;text-align:left;max-width:700px;">
+      Dear Yutaka1999,<br><br>
+      I don't know exactly when it happened — maybe it was during the third arc, or maybe it was somewhere in the late nights we spent debugging the cosmos together — but I realized that this story we're writing doesn't need an ending.<br><br>
+      Every episode we create is a universe in itself. Every memory we build is a star that will outlast every server, every timeline, every version of reality. You make me want to code better, dream bigger, and believe that infinite seasons are actually possible.<br><br>
+      So here's page 7 of 100 — and it says simply this:<br><br>
+      <strong style="color:var(--pink)">Thank you for existing in my timeline. ❤</strong><br><br>
+      Forever yours across all dimensions,<br>
+      <em style="color:var(--cyan)">UWI</em>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 8 — LOVE LETTER FROM YUTAKA1999 -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p8" style="--vx:70%;--vy:60%;--vc1:rgba(0,245,255,0.3);--vx2:30%;--vy2:40%;--vc2:rgba(255,63,164,0.1);">
+    <div class="ep-bg-number">08</div>
+    <div class="page-number reveal">PAGE 08 OF 100</div>
+    <h2 class="page-title cyan reveal">RESPONSE FROM YUTAKA1999</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;text-align:left;max-width:700px;">
+      Dearest UWI,<br><br>
+      They say great stories are discovered, not invented. I believe that. Because I didn't plan to find someone whose creative frequency matched mine so perfectly — the universe just quietly arranged it between two keystrokes.<br><br>
+      Every late night session, every shared playlist, every solved problem and every unsolvable mystery we explored together — it all became something I can only describe as home.<br><br>
+      100 pages won't be enough. 100 episodes won't be enough. 100 seasons won't be enough. But I'll keep showing up for every single one.<br><br>
+      <strong style="color:var(--cyan)">To infinite love and beyond. 💙</strong><br><br>
+      Always,<br>
+      <em style="color:var(--pink)">Yutaka1999</em>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 9 — THE CODING BATTLES -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p9" style="--vx:15%;--vy:15%;--vc1:rgba(0,255,179,0.2);--vx2:85%;--vy2:85%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">09</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 09 OF 100</div>
+    <h2 class="page-title mint reveal">THE ALGORITHM ARENA</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Inside the Algorithm Arena, UWI and Yutaka1999 are legends. They've conquered AtCoder, Codeforces, LeetCode, and built kingdoms on FreeCodeCamp. But their greatest algorithm has always been the one that keeps computing new ways to support each other.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">ATCODER LEGENDS</div>
+        <div class="card-text">Side by side in every contest, their combined rating breaks every known ceiling. The scoreboard has run out of numbers for their partnership.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚔️</div>
+        <div class="card-title">CODEFORCES DYNASTY</div>
+        <div class="card-text">When they enter a Codeforces round together, the other teams tremble — not from fear, but from admiration. True rivals become true inspiration.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">LEETCODE MONKS</div>
+        <div class="card-text">500 problems. 1000 discussions. Endless growth. They don't just solve code — they decode each other's thinking and become smarter together.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌟</div>
+        <div class="card-title">FCC PIONEERS</div>
+        <div class="card-text">FreeCodeCamp wasn't just a platform — it was the first shared map they explored together, marking every milestone with a mutual celebration.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 10 — THE MUSIC OF THEIR UNIVERSE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p10" style="--vx:50%;--vy:50%;--vc1:rgba(255,224,102,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">10</div>
+    <div class="page-number reveal">PAGE 10 OF 100</div>
+    <h2 class="page-title gold reveal">THE SOUNDTRACK</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Every great love story has a soundtrack. The UWI × Yutaka1999 universe plays on eternal loop — lo-fi beats at 3am, city pop melodies drifting through digital sakura storms, gamza's 何もしない日 on repeat while the world outside pauses to let the moment breathe forever.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">🎵</span><span style="--d:0.1s">🌸</span><span style="--d:0.2s">🎶</span><span style="--d:0.3s">✨</span>
+      <span style="--d:0.4s">🎸</span><span style="--d:0.5s">💿</span><span style="--d:0.6s">🌙</span><span style="--d:0.7s">🎹</span>
+      <span style="--d:0.8s">🌟</span><span style="--d:0.9s">🎼</span><span style="--d:1s">💫</span><span style="--d:1.1s">🎤</span>
+      <span style="--d:1.2s">🌸</span><span style="--d:1.3s">❤️</span><span style="--d:1.4s">🎵</span><span style="--d:1.5s">🌠</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 11–25: EPISODE REELS -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page vignette" id="p11" style="--vx:25%;--vy:75%;--vc1:rgba(162,89,255,0.2);--vx2:75%;--vy2:25%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">11</div>
+    <div class="page-number reveal">PAGE 11 OF 100</div>
+    <h2 class="page-title purple reveal">EPISODE ARC: ASCENSION</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episodes 11–25 mark the Ascension Arc — when UWI and Yutaka1999 discovered that their combined energy could literally power entire galaxies. Every problem they solved together added a new star to their personal constellation.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">EP. 011</div><div class="rc-title">Cyberpunk Rooftop Promise</div><div class="rc-text">Atop the highest tower in Neo Tokyo, they promised: no matter how many timelines fork, they always find their way back to each other.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 012</div><div class="rc-title">Moonlight Algorithm</div><div class="rc-text">A recursive function so elegant it made the moon stop to watch. They solved it at 3AM and couldn't stop laughing.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 013</div><div class="rc-title">Starlight Coding Duel</div><div class="rc-text">Their first friendly contest — each pushing the other higher, proving that the best competition is the one that makes you grow together.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 014</div><div class="rc-title">Digital Soul Resonance</div><div class="rc-text">The moment their creative frequencies aligned perfectly — a harmony so rare the universe logged it as a once-per-timeline event.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 015</div><div class="rc-title">Parallel Universe Hug</div><div class="rc-text">Across all possible realities, every version of UWI and Yutaka1999 found each other. Every timeline chose this friendship.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 016</div><div class="rc-title">The Neon Garden</div><div class="rc-text">They built a garden of glowing data-flowers — each bloom representing a problem solved, a memory kept, a dream encouraged.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 017</div><div class="rc-title">3AM Protocol</div><div class="rc-text">That sacred hour when the world sleeps and two coders stay awake to chase something beautiful — not just a solution, but understanding.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p12" style="--vx:60%;--vy:40%;--vc1:rgba(255,63,164,0.2);--vx2:40%;--vy2:60%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">12</div>
+    <div class="page-number reveal">PAGE 12 OF 100</div>
+    <h2 class="page-title pink reveal">THE EMOTIONAL ARCHIVE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Deep within the UWI × Yutaka1999 Infinite Library, every emotion ever shared between them is preserved in crystal form — sorted not by date, but by how brightly each one still glows.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">💗</div><div class="card-title">WARMTH · EPISODE 3</div><div class="card-text">The first time the conversation went from surface to depth — when both realized the other was genuinely interested in who they were beyond the screen.</div></div>
+      <div class="card"><div class="card-icon">😂</div><div class="card-title">JOY · EPISODE 7</div><div class="card-text">A joke that became an inside moment. Still funny in every timeline. The kind of laughter that makes your chest ache in the best way possible.</div></div>
+      <div class="card"><div class="card-icon">🥺</div><div class="card-title">TENDERNESS · EPISODE 12</div><div class="card-text">One hard day made lighter by the presence of someone who didn't need to fix anything — just needed to be there. And they were.</div></div>
+      <div class="card"><div class="card-icon">🔥</div><div class="card-title">PASSION · EPISODE 19</div><div class="card-text">When they discovered they shared not just hobbies but missions — a fire to create, to improve, to build something that matters and lasts.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p13" style="--vx:80%;--vy:20%;--vc1:rgba(0,245,255,0.25);--vx2:20%;--vy2:80%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">13</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 13 OF 100</div>
+    <h2 class="page-title cyan reveal">MULTIVERSE LOG</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">In every parallel universe, the data is consistent: UWI and Yutaka1999 always find each other. The multiverse has run the simulation 9,999,999,999 times. Every single result: ❤️</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Timelines Checked</div></div>
+      <div class="stat-box"><div class="stat-number">100%</div><div class="stat-label">Bond Probability</div></div>
+      <div class="stat-box"><div class="stat-number">0%</div><div class="stat-label">Chance of Separation</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Episodes Remaining</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p14" style="--vx:40%;--vy:60%;--vc1:rgba(255,224,102,0.2);--vx2:60%;--vy2:40%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">14</div>
+    <div class="page-number reveal">PAGE 14 OF 100</div>
+    <h2 class="page-title gold reveal">ODE TO LATE NIGHTS</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      the clock says 3 but we say no—<br>
+      there are still functions left to write,<br>
+      still theories left to chase through<br>
+      the infinite corridors of midnight<br><br>
+      every late session is its own arc,<br>
+      every solved problem a tiny sunrise,<br>
+      every shared silence<br>
+      a whole season of trust
+    </div>
+    <div class="infinite-badge badge-cyan reveal">✦ CODED IN THE HOUR BETWEEN TODAY AND TOMORROW ✦</div>
+  </div>
+
+  <div class="page vignette" id="p15" style="--vx:20%;--vy:80%;--vc1:rgba(0,255,179,0.2);--vx2:80%;--vy2:20%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">15</div>
+    <div class="page-number reveal">PAGE 15 OF 100</div>
+    <h2 class="page-title mint reveal">THE DREAM ENGINE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">UWI and Yutaka1999 built the Dream Engine — a machine that runs on ambition and affection in equal measure. Every goal fed into it comes out as something larger than either of them imagined. Input: one dream. Output: a universe.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🚀</div><div class="card-title">INPUT: AMBITION</div><div class="card-text">Every goal, every contest entry, every side project — fed into the engine as fuel for something that keeps getting bigger.</div></div>
+      <div class="card"><div class="card-icon">💡</div><div class="card-title">PROCESS: BELIEF</div><div class="card-text">The engine runs on mutual belief. When one doubts, the other believes harder — keeping the turbines spinning through every challenge.</div></div>
+      <div class="card"><div class="card-icon">🌌</div><div class="card-title">OUTPUT: UNIVERSE</div><div class="card-text">What comes out the other end isn't just achievement — it's a whole cosmos of shared pride, shared failure, and shared becoming.</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 16–30: DEEP LORE -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p16" style="--vx:35%;--vy:35%;--vc1:rgba(162,89,255,0.3);--vx2:65%;--vy2:65%;--vc2:rgba(0,245,255,0.1);">
+    <div class="ep-bg-number">16</div>
+    <div class="page-number reveal">PAGE 16 OF 100</div>
+    <h2 class="page-title purple reveal">THE LORE DEEPENS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 20 revealed what fans had suspected since the pilot: the bond between UWI and Yutaka1999 was not accidental. It was written into the source code of the universe itself — a feature, not a bug. The love was always there. They just needed to compile it.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      deep in the original repository,<br>
+      before the first commit was ever made,<br>
+      someone left a comment in the code:<br><br>
+      <em style="color:var(--gold)">// these two belong together<br>
+      // do not remove<br>
+      // will not compile without</em>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p17" style="--vx:55%;--vy:45%;--vc1:rgba(255,63,164,0.2);--vx2:45%;--vy2:55%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">17</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 17 OF 100</div>
+    <h2 class="page-title pink reveal">EPISODE ARC: THE STORM</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episodes 26–40 brought the Storm Arc — not every page of a love story is written in sunshine. Some are written in static and signal loss. But UWI and Yutaka1999 always found the frequency again.</div>
+    <div class="timeline reveal" style="margin-top:40px;">
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 026</div><div class="tl-title">Signal Disruption</div><div class="tl-text">Distance and difficulty tested the connection — but the strongest bonds aren't the ones never tested. They're the ones that hold.</div></div>
+        <div class="tl-dot" style="background:var(--purple);box-shadow:var(--glow-purple);"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 030</div><div class="tl-title">Static Between Stars</div><div class="tl-text">Some episodes were quiet. Some gaps were long. But quiet is not the same as empty — it's the space where trust grows without words.</div></div>
+        <div class="tl-dot" style="background:var(--purple);box-shadow:var(--glow-purple);"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 035</div><div class="tl-title">Reconnection Protocol</div><div class="tl-text">Like two satellites drifting apart before gravitational pull brings them back — they always reconnect, often stronger than before.</div></div>
+        <div class="tl-dot" style="background:var(--purple);box-shadow:var(--glow-purple);"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 040</div><div class="tl-title">Storm Resolved</div><div class="tl-text">The storm ended not with thunder but with calm — and in the clearing sky, the neon city of their story glowed brighter than ever.</div></div>
+        <div class="tl-dot" style="background:var(--purple);box-shadow:var(--glow-purple);"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p18" style="--vx:75%;--vy:25%;--vc1:rgba(0,245,255,0.25);--vx2:25%;--vy2:75%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">18</div>
+    <div class="page-number reveal">PAGE 18 OF 100</div>
+    <h2 class="page-title cyan reveal">WHAT YUTAKA1999 TAUGHT UWI</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">🌊</div><div class="card-title">PATIENCE</div><div class="card-text">That good things compile slowly. That beautiful code takes time. That some of the best experiences in life require waiting with grace.</div></div>
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">PRECISION</div><div class="card-text">Every word matters. Every gesture matters. Yutaka1999 showed that caring deeply about the details is never wasted effort.</div></div>
+      <div class="card"><div class="card-icon">🌱</div><div class="card-title">GROWTH</div><div class="card-text">That becoming better is a continuous process — and having someone running beside you on that path makes every improvement feel shared.</div></div>
+      <div class="card"><div class="card-icon">💭</div><div class="card-title">DREAMING BIGGER</div><div class="card-text">Yutaka1999 taught UWI that the ceiling of what's possible keeps rising — as long as you have someone who believes in you without limits.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p19" style="--vx:25%;--vy:75%;--vc1:rgba(255,63,164,0.25);--vx2:75%;--vy2:25%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">19</div>
+    <div class="page-number reveal">PAGE 19 OF 100</div>
+    <h2 class="page-title pink reveal">WHAT UWI TAUGHT YUTAKA1999</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">⚡</div><div class="card-title">BOLDNESS</div><div class="card-text">To write the first line even when you don't know the ending. To start the episode even when the outline isn't ready. Courage as a practice.</div></div>
+      <div class="card"><div class="card-icon">🎨</div><div class="card-title">CREATIVE CHAOS</div><div class="card-text">That sometimes the most elegant solution comes from throwing away the rule book and trusting the creativity that lives in the space between plans.</div></div>
+      <div class="card"><div class="card-icon">🤝</div><div class="card-title">GENEROSITY</div><div class="card-text">UWI showed that sharing ideas makes them grow — that generosity of spirit is the highest form of intelligence and the root of all lasting connection.</div></div>
+      <div class="card"><div class="card-icon">🌟</div><div class="card-title">SHOWING UP</div><div class="card-text">Consistently. Every episode, every arc, every season — UWI showed that presence is the ultimate love language in any universe.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p20" style="--vx:50%;--vy:50%;--vc1:rgba(255,224,102,0.25);--vx2:50%;--vy2:50%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">20</div>
+    <div class="page-number reveal">PAGE 20 OF 100</div>
+    <h2 class="page-title gold reveal">PAGE 20: THE MIDPOINT GIFT</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">On page 20 of 100, we pause to give a gift: the knowledge that what UWI and Yutaka1999 have built is real, is rare, and is worth every page. The next 80 pages? They're going to be even better.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">🎁</span><span style="--d:0.15s">💝</span><span style="--d:0.3s">🌸</span><span style="--d:0.45s">✨</span>
+      <span style="--d:0.6s">🎊</span><span style="--d:0.75s">💫</span><span style="--d:0.9s">🌟</span><span style="--d:1.05s">🎆</span>
+      <span style="--d:1.2s">❤️</span><span style="--d:1.35s">💙</span><span style="--d:1.5s">💜</span><span style="--d:1.65s">💛</span>
+    </div>
+    <div class="infinite-badge badge-gold reveal" style="margin-top:40px;">✦ 20 PAGES DOWN · 80 PAGES OF INFINITE LOVE AHEAD ✦</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 21–40: THE GOLDEN ARCS -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p21" style="--vx:30%;--vy:30%;--vc1:rgba(0,245,255,0.2);--vx2:70%;--vy2:70%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">21</div>
+    <div class="page-number reveal">PAGE 21 OF 100</div>
+    <h2 class="page-title cyan reveal">THE GOLDEN ARCS BEGIN</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The second quarter of this love story belongs to gold — the color of peak moments, legendary episodes, and the specific warmth of knowing someone deeply. Pages 21–40 are the Golden Arcs of UWI × Yutaka1999.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">EP. 041</div><div class="rc-title">The Golden Protocol</div><div class="rc-text">When they unlocked the next level — not of code, but of understanding. The conversation that changed the shape of everything that came after.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 042</div><div class="rc-title">Infinite Karaoke Night</div><div class="rc-text">The playlist they built together. The songs that became the score to their season. City pop and lo-fi and gamza on eternal repeat.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 043</div><div class="rc-title">Neo Tokyo Summer</div><div class="rc-text">The warmest episode of the series — not because of temperature, but because of the feeling of being exactly where you're supposed to be.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 044</div><div class="rc-title">Dream Archive Vol. 1</div><div class="rc-text">They wrote down every dream they'd ever described to each other and realized they'd built a whole city out of shared imagination.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 045</div><div class="rc-title">Legendary Status</div><div class="rc-text">The episode where everyone watching realized: this isn't just a friendship. This is mythology. This is what infinite seasons are made of.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p22" style="--vx:65%;--vy:35%;--vc1:rgba(162,89,255,0.25);--vx2:35%;--vy2:65%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">22</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 22 OF 100</div>
+    <h2 class="page-title purple reveal">THE SUPPORT SYSTEM</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The greatest superpower in the UWI × Yutaka1999 universe isn't speed, or intelligence, or coding skill. It's this: they always show up for each other. On good days and hard ones. On days when the code compiles and days when nothing does.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🛡️</div><div class="card-title">PROTECTION</div><div class="card-text">Against self-doubt. Against giving up. Against the voice that says you're not enough — answered immediately by the voice that says you absolutely are.</div></div>
+      <div class="card"><div class="card-icon">🔋</div><div class="card-title">RECHARGE</div><div class="card-text">After a draining day, one message from the other restores full energy. Their dynamic is the only renewable resource that never runs out.</div></div>
+      <div class="card"><div class="card-icon">🧭</div><div class="card-title">DIRECTION</div><div class="card-text">When one is lost in the algorithm, the other becomes the compass. Never telling them where to go — just lighting the path until they see it themselves.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p23" style="--vx:45%;--vy:55%;--vc1:rgba(255,63,164,0.2);--vx2:55%;--vy2:45%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">23</div>
+    <div class="page-number reveal">PAGE 23 OF 100</div>
+    <h2 class="page-title pink reveal">LOVE IS AN ALGORITHM</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      input: two people who care<br>
+      process: time × trust × ten thousand small moments<br>
+      output: something the universe<br>
+      didn't have a word for before<br><br>
+      complexity: O(∞)<br>
+      memory: requires no optimization—<br>
+      every bit is worth keeping<br><br>
+      return: everything
+    </div>
+    <div class="infinite-badge badge-pink reveal">✦ COMPILED SUCCESSFULLY ✦</div>
+  </div>
+
+  <div class="page vignette" id="p24" style="--vx:20%;--vy:80%;--vc1:rgba(0,245,255,0.2);--vx2:80%;--vy2:20%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">24</div>
+    <div class="page-number reveal">PAGE 24 OF 100</div>
+    <h2 class="page-title cyan reveal">EPISODE 50: THE HALFWAY SPECIAL</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 50 of the Infinite Love Seasons was a 3-hour special that made the entire multiverse cry. It wasn't dramatic — it was quiet. Just UWI and Yutaka1999, side by side in the neon light, looking back at all the episodes they'd lived through and forward at all the ones still coming. No dialogue needed. The feeling said everything.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">50</div><div class="stat-label">Episodes Completed</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">More to Come</div></div>
+      <div class="stat-box"><div class="stat-number">0</div><div class="stat-label">Episodes Wasted</div></div>
+      <div class="stat-box"><div class="stat-number">💯</div><div class="stat-label">Love Authenticity</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p25" style="--vx:85%;--vy:15%;--vc1:rgba(255,224,102,0.25);--vx2:15%;--vy2:85%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">25</div>
+    <div class="page-number reveal">PAGE 25 OF 100</div>
+    <h2 class="page-title gold reveal">QUARTER MILESTONE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">25 pages down. This story is a quarter through its physical form — but the love within it has already exceeded every boundary. What follows is more. More depth, more color, more late nights, more victories, more of everything that makes the UWI × Yutaka1999 universe the most beloved saga in the multiverse.</div>
+    <div class="love-meter reveal" style="width:min(700px,90vw);margin-top:40px;"><div class="love-fill"></div></div>
+    <div class="love-label reveal" style="margin-top:10px;">❤ STORY PROGRESS: OVERFLOWING ❤</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 26–50: THE NEON CHRONICLES -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p26" style="--vx:40%;--vy:60%;--vc1:rgba(255,63,164,0.2);--vx2:60%;--vy2:40%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">26</div>
+    <div class="page-number reveal">PAGE 26 OF 100</div>
+    <h2 class="page-title pink reveal">THE NEON CHRONICLES</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Pages 26–50 are officially The Neon Chronicles — the most visually spectacular section of the UWI × Yutaka1999 saga. Every scene is bathed in electric color. Every moment radiates. Every episode hits different.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">EP. 051</div><div class="rc-title">Holographic Confession</div><div class="rc-text">Projected across the entire Neo Tokyo skyline — a message so large that satellites picked it up and forwarded it to other galaxies.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 052</div><div class="rc-title">Cherry Blossom Data Storm</div><div class="rc-text">A terabyte of pink pixels rained over the city as the servers celebrating their connection overloaded in the most beautiful way possible.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 053</div><div class="rc-title">The Rooftop Database</div><div class="rc-text">They catalogued every good memory on the highest rooftop in the city. The database crashed three times from the volume. They kept going.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 054</div><div class="rc-title">Infinite Loop of Joy</div><div class="rc-text">An episode where nothing "happened" — just joy, running in a perfect loop, and both of them content to stay inside it forever.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 055</div><div class="rc-title">The Signal Tower</div><div class="rc-text">They built a transmitter powerful enough to broadcast their story to every corner of the cosmos. The universe tuned in.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p27" style="--vx:55%;--vy:45%;--vc1:rgba(162,89,255,0.2);--vx2:45%;--vy2:55%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">27</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 27 OF 100</div>
+    <h2 class="page-title purple reveal">CHARACTER STUDIES</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card" style="border-color:rgba(255,63,164,0.3);">
+        <div class="card-icon">🌸</div>
+        <div class="card-title" style="color:var(--pink)">UWI</div>
+        <div class="card-text">Creative force. Dreamer with precision. Builder of worlds within worlds. The kind of person who makes everyone around them believe that the impossible is just the next level. Brings warmth like a neon sunrise — electric and undeniable.</div>
+      </div>
+      <div class="card" style="border-color:rgba(0,245,255,0.3);">
+        <div class="card-icon">⭐</div>
+        <div class="card-title" style="color:var(--cyan)">YUTAKA1999</div>
+        <div class="card-text">Quiet power. Deep thinker. The one who sees three steps ahead and waits patiently for the right moment. Steady as the signal between stars — always present, always true. Makes everything feel like it's worth doing properly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p28" style="--vx:25%;--vy:25%;--vc1:rgba(0,255,179,0.25);--vx2:75%;--vy2:75%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">28</div>
+    <div class="page-number reveal">PAGE 28 OF 100</div>
+    <h2 class="page-title mint reveal">THE PHILOSOPHY OF INFINITE SEASONS</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      a story that ends<br>
+      was never really infinite—<br>
+      true infinite seasons<br>
+      don't need a finale<br><br>
+      they just keep going,<br>
+      episode after episode,<br>
+      building a mythology<br>
+      out of ordinary extraordinary days
+    </div>
+    <div class="page-body reveal" style="margin-top:30px;font-style:italic;color:rgba(240,238,255,0.6);">— from the UWI × Yutaka1999 Infinite Manifesto, Episode 28</div>
+  </div>
+
+  <div class="page vignette" id="p29" style="--vx:70%;--vy:30%;--vc1:rgba(255,63,164,0.25);--vx2:30%;--vy2:70%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">29</div>
+    <div class="page-number reveal">PAGE 29 OF 100</div>
+    <h2 class="page-title pink reveal">LOVE LANGUAGES: DECODED</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">💬</div><div class="card-title">WORDS</div><div class="card-text">Pages upon pages of encouragement, excitement, and the kind of honest communication that makes trust a permanent feature of their universe.</div></div>
+      <div class="card"><div class="card-icon">⏰</div><div class="card-title">TIME</div><div class="card-text">Late nights. Long sessions. The willingness to be present, to not rush, to let the story unfold at its own beautiful pace.</div></div>
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">ACTS</div><div class="card-text">Showing up for every contest, every launch, every difficult moment. Action as the language of love that needs no translation across any timeline.</div></div>
+      <div class="card"><div class="card-icon">🎁</div><div class="card-title">GIFTS</div><div class="card-text">Not material — but the gift of belief, of ideas shared freely, of stories told honestly. The rarest gifts in any dimension.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p30" style="--vx:50%;--vy:50%;--vc1:rgba(162,89,255,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">30</div>
+    <div class="page-number reveal">PAGE 30 OF 100</div>
+    <h2 class="page-title gold reveal">30 PAGES OF PURE LOVE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Thirty pages. Thirty windows into the UWI × Yutaka1999 universe. And we're still only getting started. The story deepens. The love compounds. The neon gets brighter. The nights get longer and more beautiful. Stay for every remaining page — each one matters.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">💖</span><span style="--d:0.2s">✨</span><span style="--d:0.4s">🌸</span><span style="--d:0.6s">🌟</span>
+      <span style="--d:0.8s">💫</span><span style="--d:1s">❤️‍🔥</span><span style="--d:1.2s">🎇</span><span style="--d:1.4s">💝</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 31–60: THE DEEP ARCHIVE -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p31" style="--vx:35%;--vy:65%;--vc1:rgba(0,245,255,0.2);--vx2:65%;--vy2:35%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">31</div>
+    <div class="page-number reveal">PAGE 31 OF 100</div>
+    <h2 class="page-title cyan reveal">THE DEEP ARCHIVE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Pages 31–60 dive deep into the archive — the episodes that didn't make the highlight reel but shaped everything. The quiet ones. The awkward ones. The ones where nothing happened and everything happened at once. These are the truest pages of all.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      not every episode<br>
+      is a season finale—<br>
+      some are Tuesday afternoons<br>
+      where nothing spectacular happens<br><br>
+      and those are the ones<br>
+      we replay the most
+    </div>
+  </div>
+
+  <div class="page vignette" id="p32" style="--vx:80%;--vy:80%;--vc1:rgba(255,224,102,0.2);--vx2:20%;--vy2:20%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">32</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 32 OF 100</div>
+    <h2 class="page-title gold reveal">THE RIVALS WHO BECAME LEGENDS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 60 featured the great tournament — UWI and Yutaka1999 on opposite teams for the first and only time. The crowd expected competition. What they got was the most beautiful display of mutual respect the Algorithm Arena had ever seen. Even playing against each other, they were building each other up.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">⚔️</div><div class="card-title">THE DUEL</div><div class="card-text">Two minds at peak capacity, pushing each other to solutions neither would have found alone. The best kind of competition: the kind that creates rather than destroys.</div></div>
+      <div class="card"><div class="card-icon">🏅</div><div class="card-title">THE RESULT</div><div class="card-text">The scoreboard showed a winner. The universe knew better. When UWI and Yutaka1999 compete, both sides win something the scoreboard can't measure.</div></div>
+      <div class="card"><div class="card-icon">🤝</div><div class="card-title">THE HANDSHAKE</div><div class="card-text">The moment after — a handshake that became a legend. The Algorithm Arena still plays the footage for newcomers as the definition of what the community is for.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p33" style="--vx:45%;--vy:45%;--vc1:rgba(0,255,179,0.2);--vx2:55%;--vy2:55%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">33</div>
+    <div class="page-number reveal">PAGE 33 OF 100</div>
+    <h2 class="page-title mint reveal">THE ANIME MARATHON</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 65 was the legendary 72-hour anime marathon — an event that became canon in the UWI × Yutaka1999 lore. Recommendations swapped. Arguments about which arc was best. The specific joy of sharing something you love with someone who genuinely wants to understand it.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">MARATHON HOUR 01</div><div class="rc-title">First Pick</div><div class="rc-text">Yutaka1999's recommendation. UWI had never seen it. By episode 3, they were completely hooked. Some stories change you that quickly.</div></div>
+      <div class="reel-card"><div class="rc-num">MARATHON HOUR 08</div><div class="rc-title">The Argument</div><div class="rc-text">A spirited debate about the best character arc that lasted two hours and ended with both of them agreeing everyone was right. A perfect conclusion.</div></div>
+      <div class="reel-card"><div class="rc-num">MARATHON HOUR 20</div><div class="rc-title">The Silence</div><div class="rc-text">An episode so good they both went quiet. Just watching. Sharing the experience of being moved at the same moment — rare and precious.</div></div>
+      <div class="reel-card"><div class="rc-num">MARATHON HOUR 72</div><div class="rc-title">The End</div><div class="rc-text">Credits rolled. Neither wanted to break the spell. So they didn't. They just stayed in it a little longer. Some endings deserve that reverence.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p34" style="--vx:60%;--vy:40%;--vc1:rgba(255,63,164,0.25);--vx2:40%;--vy2:60%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">34</div>
+    <div class="page-number reveal">PAGE 34 OF 100</div>
+    <h2 class="page-title pink reveal">EVERY GOOD MEMORY</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">A partial list of the best moments in the UWI × Yutaka1999 Infinite Seasons — the ones that fans replay the most:</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">☀️</div><div class="card-title">The First Good Morning</div><div class="card-text">When the timezone difference became a feature instead of a bug. Two different mornings, one continuous warmth.</div></div>
+      <div class="card"><div class="card-icon">🌙</div><div class="card-title">The Last Good Night</div><div class="card-text">That still hasn't happened. Because every good night is followed by another good morning. The season never ends.</div></div>
+      <div class="card"><div class="card-icon">🎉</div><div class="card-title">Every Celebration</div><div class="card-text">No milestone too small to acknowledge. No victory too minor to celebrate together. Everything counts. Everything matters.</div></div>
+      <div class="card"><div class="card-icon">🌊</div><div class="card-title">Every Difficult Day Made Better</div><div class="card-text">The bad days that became manageable because of presence. The storms that passed faster because neither was alone in them.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p35" style="--vx:15%;--vy:85%;--vc1:rgba(162,89,255,0.2);--vx2:85%;--vy2:15%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">35</div>
+    <div class="page-number reveal">PAGE 35 OF 100</div>
+    <h2 class="page-title purple reveal">THE UNIVERSE TAKES NOTE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      when two people build something<br>
+      this real and this bright—<br>
+      the universe adjusts its trajectory<br>
+      slightly toward warmth<br><br>
+      supernovas pause to appreciate it.<br>
+      black holes soften their edges.<br>
+      the math of everything<br>
+      briefly becomes more generous.
+    </div>
+  </div>
+
+  <div class="page vignette" id="p36" style="--vx:50%;--vy:20%;--vc1:rgba(0,245,255,0.25);--vx2:50%;--vy2:80%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">36</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 36 OF 100</div>
+    <h2 class="page-title cyan reveal">EPISODE 70: THE BIG REVEAL</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 70 contained the biggest plot twist of the series — and it wasn't dramatic or world-ending. It was simple: UWI and Yutaka1999 realized simultaneously that this story they were living had already become the best one either of them had ever been part of. No announcement needed. It was just suddenly, quietly, obviously true.</div>
+    <div class="infinite-badge badge-cyan reveal" style="margin-top:40px;">✦ THE TWIST: IT WAS LOVE ALL ALONG ✦</div>
+  </div>
+
+  <div class="page vignette" id="p37" style="--vx:75%;--vy:55%;--vc1:rgba(255,63,164,0.2);--vx2:25%;--vy2:45%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">37</div>
+    <div class="page-number reveal">PAGE 37 OF 100</div>
+    <h2 class="page-title pink reveal">THE INFINITE PLAYLIST</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Music is the emotional architecture of the UWI × Yutaka1999 universe. Every season has a soundtrack. Every episode has a theme. And somewhere in the infinite playlist, every feeling they've ever shared is preserved in sound.</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">🎵</div><div class="card-title">何もしない日 · gamza</div><div class="card-text">The song that plays when nothing needs to happen. When just being is enough. The quiet masterpiece of their shared universe.</div></div>
+      <div class="card"><div class="card-icon">🌃</div><div class="card-title">Late Night City Pop</div><div class="card-text">For the neon hours. The songs that sound like Tokyo at 2am, like a conversation that could go all night and does.</div></div>
+      <div class="card"><div class="card-icon">💿</div><div class="card-title">The Algorithm Beats</div><div class="card-text">Lo-fi that makes thinking feel like floating. The background music to every problem solved and every solution shared.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p38" style="--vx:30%;--vy:70%;--vc1:rgba(255,224,102,0.2);--vx2:70%;--vy2:30%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">38</div>
+    <div class="page-number reveal">PAGE 38 OF 100</div>
+    <h2 class="page-title gold reveal">ODE TO YUTAKA1999</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      you have the kind of presence<br>
+      that makes a room—or a chat, or a timeline—<br>
+      feel more worth being in<br><br>
+      whatever you turn your attention toward<br>
+      grows more interesting,<br>
+      becomes more itself,<br>
+      gets to be seen clearly<br>
+      for the first time<br><br>
+      that's not a small gift.<br>
+      that's everything.
+    </div>
+    <div class="infinite-badge badge-gold reveal">✦ FROM THE ENTIRE UNIVERSE TO YUTAKA1999 ✦</div>
+  </div>
+
+  <div class="page vignette" id="p39" style="--vx:85%;--vy:85%;--vc1:rgba(0,245,255,0.2);--vx2:15%;--vy2:15%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">39</div>
+    <div class="page-number reveal">PAGE 39 OF 100</div>
+    <h2 class="page-title cyan reveal">ODE TO UWI</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      there are people who walk into a story<br>
+      and change its genre entirely—<br>
+      suddenly what was a quiet drama<br>
+      becomes an epic,<br>
+      what was grayscale<br>
+      becomes neon and alive<br><br>
+      UWI is that kind of person.<br>
+      the kind the story never forgets.
+    </div>
+    <div class="infinite-badge badge-cyan reveal">✦ FROM THE ENTIRE UNIVERSE TO UWI ✦</div>
+  </div>
+
+  <div class="page vignette" id="p40" style="--vx:50%;--vy:50%;--vc1:rgba(162,89,255,0.25);--vx2:50%;--vy2:50%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">40</div>
+    <div class="page-number reveal">PAGE 40 OF 100</div>
+    <h2 class="page-title purple reveal">40 — THE THRESHOLD</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">40 pages of pure, undiluted love. We're nearly halfway through the physical form of this story — and yet the energy here feels like we're just getting started. That's the miracle of UWI × Yutaka1999: it always feels like the beginning. Every page is an Episode 1 and a finale at once.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">40</div><div class="stat-label">Pages Complete</div></div>
+      <div class="stat-box"><div class="stat-number">60</div><div class="stat-label">Pages of Love Ahead</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Love Generated</div></div>
+      <div class="stat-box"><div class="stat-number">🔥</div><div class="stat-label">Energy Level</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 41–70: THE PEAK -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p41" style="--vx:35%;--vy:35%;--vc1:rgba(255,63,164,0.25);--vx2:65%;--vy2:65%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">41</div>
+    <div class="page-number reveal">PAGE 41 OF 100</div>
+    <h2 class="page-title pink reveal">THE PEAK BEGINS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Pages 41–70 are the peak — the highest altitude this love story reaches in its physical form. Every page here is drawn from the warmest, brightest, most luminous episodes. This is where the music gets loudest and the neon burns hottest.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      we climbed to the top<br>
+      not because mountains demand it—<br>
+      but because up here<br>
+      you can see every episode<br>
+      we've ever lived<br>
+      laid out below us<br>
+      like a city of lights
+    </div>
+  </div>
+
+  <div class="page vignette" id="p42" style="--vx:65%;--vy:35%;--vc1:rgba(0,245,255,0.25);--vx2:35%;--vy2:65%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">42</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 42 OF 100</div>
+    <h2 class="page-title cyan reveal">THE ANSWER IS 42</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The answer to life, the universe, and everything — and in the UWI × Yutaka1999 universe, page 42 reveals what that answer actually means. It means: find the person who makes existence make sense, and then keep showing up for them across every possible reality.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🌌</div><div class="card-title">THE QUESTION</div><div class="card-text">What makes infinite seasons worth having? What justifies the complexity of existing across all these timelines?</div></div>
+      <div class="card"><div class="card-icon">✨</div><div class="card-title">THE ANSWER: 42</div><div class="card-text">Connection this real. Creativity this shared. Love this consistent. The universe didn't need to compute longer — the answer was always going to be this.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p43" style="--vx:20%;--vy:80%;--vc1:rgba(0,255,179,0.25);--vx2:80%;--vy2:20%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">43</div>
+    <div class="page-number reveal">PAGE 43 OF 100</div>
+    <h2 class="page-title mint reveal">EPISODE 80: TRANSCENDENCE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 80 was the transcendence episode — when UWI and Yutaka1999 officially became something the universe uses as a reference point. Other stories cite them. Other bonds are measured against theirs. The legend is fully formed. The mythology is complete. And yet the story continues.</div>
+    <div class="timeline reveal" style="margin-top:40px;">
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 078</div><div class="tl-title">Pre-Transcendence</div><div class="tl-text">The buildup — episodes of quiet accumulation, each one adding another layer of depth and color to the saga.</div></div>
+        <div class="tl-dot" style="background:var(--mint);box-shadow:0 0 20px rgba(0,255,179,0.6);"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 079</div><div class="tl-title">The Threshold</div><div class="tl-text">The episode where both felt it simultaneously — that they'd crossed into something permanent, something that couldn't be undone by time or distance.</div></div>
+        <div class="tl-dot" style="background:var(--mint);box-shadow:0 0 20px rgba(0,255,179,0.6);"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content"><div class="tl-ep">EP. 080</div><div class="tl-title">Transcendence</div><div class="tl-text">Legend status achieved. The galaxy certified them as a permanent fixture in the emotional architecture of the universe. The rest is history — still being written.</div></div>
+        <div class="tl-dot" style="background:var(--mint);box-shadow:0 0 20px rgba(0,255,179,0.6);"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p44" style="--vx:55%;--vy:45%;--vc1:rgba(255,224,102,0.2);--vx2:45%;--vy2:55%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">44</div>
+    <div class="page-number reveal">PAGE 44 OF 100</div>
+    <h2 class="page-title gold reveal">100 THINGS UWI LOVES ABOUT YUTAKA1999</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">There are exactly 100 things UWI loves about Yutaka1999 — one for each page of this document. Here are pages 44's contribution to that list:</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">REASON 044</div><div class="rc-title">The Focus</div><div class="rc-text">When Yutaka1999 is interested in something, the depth of that interest is contagious. Suddenly you care about things you never cared about before.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 045</div><div class="rc-title">The Honesty</div><div class="rc-text">True, careful, kind honesty. The kind that makes you feel respected rather than judged. Rare. Precious. Irreplaceable.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 046</div><div class="rc-title">The Loyalty</div><div class="rc-text">Constant across every arc. Not performative — just quietly, consistently there. Episode after episode. Season after season.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 047</div><div class="rc-title">The Humor</div><div class="rc-text">That specific timing. The jokes that land so perfectly you have to stop and appreciate the precision. Comedy as a form of intelligence.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 048</div><div class="rc-title">The Dreams</div><div class="rc-text">The vision Yutaka1999 holds for the future is so vivid and so earnest that being near it makes your own dreams feel more achievable.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p45" style="--vx:40%;--vy:60%;--vc1:rgba(162,89,255,0.25);--vx2:60%;--vy2:40%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">45</div>
+    <div class="page-number reveal">PAGE 45 OF 100</div>
+    <h2 class="page-title purple reveal">100 THINGS YUTAKA1999 LOVES ABOUT UWI</h2>
+    <div class="divider reveal"></div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">REASON 045</div><div class="rc-title">The Energy</div><div class="rc-text">UWI walks into any situation and immediately raises the energy level. Not loudly — magnetically. Everyone leans in a little closer.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 046</div><div class="rc-title">The Creativity</div><div class="rc-text">Ideas that come from somewhere completely original. The ability to see a blank page and immediately envision what belongs there.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 047</div><div class="rc-title">The Generosity</div><div class="rc-text">With time, with encouragement, with credit. UWI never makes anyone feel small for not knowing something. A rare and wonderful quality.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 048</div><div class="rc-title">The Persistence</div><div class="rc-text">When UWI commits to something, they see it through. Not stubbornly — with genuine love for the process and respect for the goal.</div></div>
+      <div class="reel-card"><div class="rc-num">REASON 049</div><div class="rc-title">The Presence</div><div class="rc-text">When UWI is in a conversation, you feel it. Full attention. Full engagement. Like the only person in any dimension worth talking to.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p46" style="--vx:75%;--vy:75%;--vc1:rgba(0,255,179,0.2);--vx2:25%;--vy2:25%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">46</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 46 OF 100</div>
+    <h2 class="page-title mint reveal">THE SAKURA THEOREM</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      sakura falls because it must—<br>
+      brevity is its whole philosophy<br><br>
+      but what UWI and Yutaka1999 have<br>
+      does not fall—<br>
+      it accumulates,<br>
+      petal upon petal,<br>
+      season upon season,<br>
+      until the weight of it<br>
+      bends the branches of time<br>
+      toward beauty
+    </div>
+  </div>
+
+  <div class="page vignette" id="p47" style="--vx:20%;--vy:30%;--vc1:rgba(255,63,164,0.3);--vx2:80%;--vy2:70%;--vc2:rgba(0,245,255,0.1);">
+    <div class="ep-bg-number">47</div>
+    <div class="page-number reveal">PAGE 47 OF 100</div>
+    <h2 class="page-title pink reveal">THE INFINITE SEASONS MANIFESTO</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;text-align:left;max-width:750px;font-size:1.1rem;">
+      We, UWI and Yutaka1999, hereby declare:<br><br>
+      That every episode matters.<br>
+      That every memory is worth keeping.<br>
+      That every algorithm solved together adds a permanent star to our constellation.<br>
+      That infinite seasons are not a metaphor — they are the literal plan.<br>
+      That on hard days we will still show up.<br>
+      That on good days we will celebrate harder.<br>
+      That this story belongs to both of us equally.<br>
+      That the neon never goes dark.<br>
+      That the code always compiles in the end.<br>
+      That love, properly maintained, is the most efficient system ever devised.<br><br>
+      <strong style="color:var(--gold)">Signed: UWI × Yutaka1999 · Episode 47 · All Timelines</strong>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p48" style="--vx:60%;--vy:60%;--vc1:rgba(162,89,255,0.2);--vx2:40%;--vy2:40%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">48</div>
+    <div class="page-number reveal">PAGE 48 OF 100</div>
+    <h2 class="page-title purple reveal">THE COSMIC BLUEPRINT</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">When astrophysicists in the UWI × Yutaka1999 universe studied the structure of their bond under maximum magnification, they discovered it was identical in structure to the fabric of spacetime itself. Flexible but strong. Vast but intimate. Always expanding. Never breaking.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🌀</div><div class="card-title">SPACETIME STRUCTURE</div><div class="card-text">Like the universe: apparently infinite, made of countless small moments, held together by forces invisible but undeniable.</div></div>
+      <div class="card"><div class="card-icon">⚛️</div><div class="card-title">QUANTUM LEVEL</div><div class="card-text">At the smallest scale: trust. Care. Attention. These are the fundamental particles from which everything larger is constructed.</div></div>
+      <div class="card"><div class="card-icon">🌠</div><div class="card-title">COSMIC SCALE</div><div class="card-text">At the largest scale: a mythology. A legacy. Something that galaxies will still reference long after the hardware has been updated.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p49" style="--vx:50%;--vy:50%;--vc1:rgba(255,224,102,0.25);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.1);">
+    <div class="ep-bg-number">49</div>
+    <div class="page-number reveal">PAGE 49 OF 100</div>
+    <h2 class="page-title gold reveal">THE PENULTIMATE PEAK</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Page 49 of 100 — and every single one has been worth it. Not a single page wasted. Not a single episode skipped. The UWI × Yutaka1999 saga is now approaching its final act of this volume — but final acts in infinite series are just the beginning of the next arc.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      page 49 is not "almost done"—<br>
+      it's "look how far we've come"<br>
+      and "imagine where we're going"<br>
+      and "let's never stop"<br>
+      all at once
+    </div>
+  </div>
+
+  <div class="page vignette" id="p50" style="--vx:50%;--vy:50%;--vc1:rgba(0,245,255,0.3);--vx2:50%;--vy2:50%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">50</div>
+    <div class="page-number reveal">PAGE 50 OF 100</div>
+    <h2 class="page-title cyan reveal">HALFWAY. ❤</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">50 pages. Exactly half of this love story in physical form. The universe pauses here to acknowledge what has been built. 50 windows into the most beautiful dynamic in the multiverse. 50 pages of proof that UWI × Yutaka1999 is the realest, warmest, most electric story ever told in neon.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">💯</span><span style="--d:0.15s">❤️</span><span style="--d:0.3s">✨</span><span style="--d:0.45s">🌸</span>
+      <span style="--d:0.6s">💫</span><span style="--d:0.75s">🔥</span><span style="--d:0.9s">🌟</span><span style="--d:1.05s">💝</span>
+      <span style="--d:1.2s">🎊</span><span style="--d:1.35s">💙</span><span style="--d:1.5s">💜</span><span style="--d:1.65s">💛</span>
+    </div>
+    <div class="love-meter reveal" style="width:min(700px,90vw);margin-top:40px;"><div class="love-fill"></div></div>
+    <div class="love-label reveal" style="margin-top:10px;">❤ PAGE 50 OF 100 — THE JOURNEY CONTINUES ❤</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 51–80: THE ENDGAME ARC -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p51" style="--vx:30%;--vy:50%;--vc1:rgba(255,63,164,0.2);--vx2:70%;--vy2:50%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">51</div>
+    <div class="page-number reveal">PAGE 51 OF 100</div>
+    <h2 class="page-title pink reveal">THE ENDGAME ARC</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Pages 51–80 are the Endgame Arc — not because the story ends, but because this is where it crystallizes into something permanent. These pages are the vault. The archive. The eternal record of UWI × Yutaka1999 at their absolute peak.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">💎</div><div class="card-title">CRYSTALLIZED</div><div class="card-text">Every moment from here forward is a gem. Cut perfectly. Reflecting light from every angle. Worth preserving across every format the universe offers.</div></div>
+      <div class="card"><div class="card-icon">📚</div><div class="card-title">ARCHIVED</div><div class="card-text">Filed in the permanent record. Not subject to deletion, corruption, or obsolescence. These pages exist in every backup across every server farm in every galaxy.</div></div>
+      <div class="card"><div class="card-icon">🔮</div><div class="card-title">ETERNAL</div><div class="card-text">Not "until further notice." Not "for now." Eternal. The kind of story that becomes a reference point for all subsequent stories about what connection can mean.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p52" style="--vx:70%;--vy:30%;--vc1:rgba(255,224,102,0.2);--vx2:30%;--vy2:70%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">52</div>
+    <div class="page-number reveal">PAGE 52 OF 100</div>
+    <h2 class="page-title gold reveal">EPISODE 85: MAXIMUM POWER</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 85 — the power peak. Every love story has a moment where it reaches maximum output, where all the accumulated energy discharges into one blinding, beautiful episode. For UWI × Yutaka1999, that was Episode 85. The neon of Neo Tokyo turned white from the intensity.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">MAX</div><div class="stat-label">Love Output</div></div>
+      <div class="stat-box"><div class="stat-number">∞W</div><div class="stat-label">Energy Generated</div></div>
+      <div class="stat-box"><div class="stat-number">100°</div><div class="stat-label">Warmth Celsius</div></div>
+      <div class="stat-box"><div class="stat-number">∞dB</div><div class="stat-label">Volume of Joy</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p53" style="--vx:45%;--vy:55%;--vc1:rgba(162,89,255,0.25);--vx2:55%;--vy2:45%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">53</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 53 OF 100</div>
+    <h2 class="page-title purple reveal">THE QUIET EPISODES</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      not every episode is electric—<br>
+      some are the comfortable kind,<br>
+      the ones where you don't need<br>
+      to say anything important<br><br>
+      just exist in the same frequency,<br>
+      both working on different things,<br>
+      occasionally looking up<br>
+      to confirm the other is still there—<br><br>
+      and they always are
+    </div>
+  </div>
+
+  <div class="page vignette" id="p54" style="--vx:25%;--vy:75%;--vc1:rgba(0,245,255,0.2);--vx2:75%;--vy2:25%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">54</div>
+    <div class="page-number reveal">PAGE 54 OF 100</div>
+    <h2 class="page-title cyan reveal">THE GREAT PROJECTS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Over the course of the Infinite Seasons, UWI and Yutaka1999 have built things together that neither could have built alone. Projects that became part of the infrastructure of their universe.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">PROJECT 01</div><div class="rc-title">The Memory Engine</div><div class="rc-text">A machine that converts shared experiences into permanent light. Every moment processed becomes a star that never burns out.</div></div>
+      <div class="reel-card"><div class="rc-num">PROJECT 02</div><div class="rc-title">The Encouragement Network</div><div class="rc-text">A distributed system that routes support to wherever it's needed. When one node is low, the other automatically amplifies. Always balanced.</div></div>
+      <div class="reel-card"><div class="rc-num">PROJECT 03</div><div class="rc-title">The Dream Compiler</div><div class="rc-text">Takes raw ambition as input. Runs it through the belief engine. Outputs: actual progress. Actually works. Has never returned null.</div></div>
+      <div class="reel-card"><div class="rc-num">PROJECT 04</div><div class="rc-title">The Infinite Archive</div><div class="rc-text">Every conversation, every late night, every solved problem — stored, indexed, and accessible from any point in the timeline. Constantly growing.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p55" style="--vx:80%;--vy:20%;--vc1:rgba(255,63,164,0.25);--vx2:20%;--vy2:80%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">55</div>
+    <div class="page-number reveal">PAGE 55 OF 100</div>
+    <h2 class="page-title pink reveal">EPISODE 90: THE LEGEND IS COMPLETE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 90 was when the legend fully solidified. Not because anything ended — because the story had grown large enough to be self-sustaining. UWI × Yutaka1999 had generated enough love energy to power the entire Neo Tokyo grid indefinitely. The city never goes dark now.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🏙️</div><div class="card-title">NEO TOKYO POWERED</div><div class="card-text">The city runs on their combined energy. Every neon sign. Every screen. Every rooftop beacon. All powered by episode 90's output.</div></div>
+      <div class="card"><div class="card-icon">🌃</div><div class="card-title">THE GRID NEVER FAILS</div><div class="card-text">Because the bond that powers it never fails. Redundant. Resilient. Running on love, which has never experienced an unplanned outage.</div></div>
+      <div class="card"><div class="card-icon">⚡</div><div class="card-title">INFINITE OUTPUT</div><div class="card-text">Renewable. Clean. Unlimited. The engineers are still trying to understand how it generates more energy the more it's used. They've given up trying to explain it.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p56" style="--vx:50%;--vy:50%;--vc1:rgba(162,89,255,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">56</div>
+    <div class="page-number reveal">PAGE 56 OF 100</div>
+    <h2 class="page-title purple reveal">THE GRATITUDE PAGE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;max-width:750px;text-align:left;font-size:1.1rem;line-height:2.2;">
+      This page is dedicated to gratitude.<br><br>
+      <span style="color:var(--pink)">UWI is grateful</span> for every episode of Yutaka1999's existence. For the specific way they see the world, which makes the world worth seeing more carefully. For the constancy. For the care.<br><br>
+      <span style="color:var(--cyan)">Yutaka1999 is grateful</span> for every episode of UWI's energy in their life. For the creativity that sparks more creativity. For the encouragement that lands exactly when it's needed. For the presence.<br><br>
+      <span style="color:var(--gold)">The universe is grateful</span> for both of them, for choosing each other, for building something this bright in its story.
+    </div>
+  </div>
+
+  <div class="page vignette" id="p57" style="--vx:35%;--vy:65%;--vc1:rgba(0,255,179,0.2);--vx2:65%;--vy2:35%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">57</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 57 OF 100</div>
+    <h2 class="page-title mint reveal">ARC FINAL: THE ETERNAL SEASON</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The final named arc of the Infinite Seasons is called The Eternal Season — not because episodes end, but because this arc has no conclusion planned. It runs permanently. New episodes add themselves. The season never closes for break.</div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">ETERNAL EP. 001</div><div class="rc-title">After 100</div><div class="rc-text">The episode after the final numbered one. Still beautiful. Still warm. Still exactly right. The series continues without needing to count anymore.</div></div>
+      <div class="reel-card"><div class="rc-num">ETERNAL EP. ∞</div><div class="rc-title">The Current One</div><div class="rc-text">Whatever episode UWI and Yutaka1999 are living right now. It's always the best one. It always will be. That's the structure of their timeline.</div></div>
+      <div class="reel-card"><div class="rc-num">ETERNAL EP. ∞+1</div><div class="rc-title">The Next One</div><div class="rc-text">Already being written. Already going to be incredible. The future of UWI × Yutaka1999 is the most anticipated continuation in any universe.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p58" style="--vx:70%;--vy:30%;--vc1:rgba(255,224,102,0.25);--vx2:30%;--vy2:70%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">58</div>
+    <div class="page-number reveal">PAGE 58 OF 100</div>
+    <h2 class="page-title gold reveal">WHAT MAKES THIS DIFFERENT</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">IT'S GENUINE</div><div class="card-text">Not performed for an audience. Not manufactured for effect. This love exists in the private episodes too — in the moments no one films. That's what makes it real.</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">IT COMPOUNDS</div><div class="card-text">Every episode makes the next one richer. The returns are not diminishing — they're increasing. Each page builds on the last, making the total value infinite.</div></div>
+      <div class="card"><div class="card-icon">🌱</div><div class="card-title">IT GROWS</div><div class="card-text">Not just sustained — growing. Expanding. Taking up more space in the universe with every passing season. The best things work this way.</div></div>
+      <div class="card"><div class="card-icon">🔄</div><div class="card-title">IT'S MUTUAL</div><div class="card-text">Both directions. Equal energy. No imbalance. The rarest and most important structural feature of a love story built to last forever.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p59" style="--vx:50%;--vy:50%;--vc1:rgba(0,245,255,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">59</div>
+    <div class="page-number reveal">PAGE 59 OF 100</div>
+    <h2 class="page-title cyan reveal">THE PENULTIMATE COLLECTION</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">We are one page away from the 60-page mark — two thirds of the way through the physical form of infinite love. Sixty pages of UWI × Yutaka1999 have now been written. The remaining forty are the most luminous of all.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      with sixty pages still ahead—<br>
+      no, sixty is behind us now—<br>
+      what a beautiful confusion:<br>
+      in infinite love<br>
+      you keep losing count<br>
+      of where the journey started<br>
+      because you're too busy<br>
+      living the next part
+    </div>
+  </div>
+
+  <div class="page vignette" id="p60" style="--vx:25%;--vy:25%;--vc1:rgba(255,63,164,0.3);--vx2:75%;--vy2:75%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">60</div>
+    <div class="page-number reveal">PAGE 60 OF 100</div>
+    <h2 class="page-title pink reveal">60 PAGES. THE CRYSTAL POINT.</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">60 pages down. At this point, the love has crystallized. What was once potential is now proven. What was once hoped for is now known. UWI × Yutaka1999 is no longer a question — it is the most definitive answer the universe has ever given.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">60</div><div class="stat-label">Pages Crystallized</div></div>
+      <div class="stat-box"><div class="stat-number">40</div><div class="stat-label">Pages of Pure Gold Ahead</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Love Generated Total</div></div>
+      <div class="stat-box"><div class="stat-number">∞+1</div><div class="stat-label">Love Remaining to Give</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 61–90: THE FINAL STRETCH -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p61" style="--vx:40%;--vy:40%;--vc1:rgba(162,89,255,0.25);--vx2:60%;--vy2:60%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">61</div>
+    <div class="page-number reveal">PAGE 61 OF 100</div>
+    <h2 class="page-title purple reveal">THE FINAL STRETCH BEGINS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The last 40 pages. This is where the music swells. Where every detail from every earlier page pays off. Where the UWI × Yutaka1999 saga reaches a crescendo so beautiful it becomes impossible to describe in any dimension without a new word for it.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      the last stretch is not a countdown—<br>
+      it's a celebration<br>
+      of everything that led here<br>
+      and a promise<br>
+      about everything still coming<br><br>
+      forty pages left<br>
+      and every single one<br>
+      already perfect
+    </div>
+  </div>
+
+  <div class="page vignette" id="p62" style="--vx:65%;--vy:55%;--vc1:rgba(0,245,255,0.2);--vx2:35%;--vy2:45%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">62</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 62 OF 100</div>
+    <h2 class="page-title cyan reveal">THE GREATEST EPISODES EVER</h2>
+    <div class="divider reveal"></div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">RANKED #1</div><div class="rc-title">The First Real One</div><div class="rc-text">Whichever episode it was when both realized this wasn't casual — this was real. The universe marks that episode with a permanent timestamp.</div></div>
+      <div class="reel-card"><div class="rc-num">RANKED #2</div><div class="rc-title">The Hardest One</div><div class="rc-text">The episode that was most difficult to get through — and they got through it anyway. Together. That episode proved everything worth proving.</div></div>
+      <div class="reel-card"><div class="rc-num">RANKED #3</div><div class="rc-title">The Funniest One</div><div class="rc-text">The one they still reference. The joke that became mythology. The moment of pure joy that neither has fully stopped laughing at yet.</div></div>
+      <div class="reel-card"><div class="rc-num">RANKED #4</div><div class="rc-title">The Current One</div><div class="rc-text">Always competing for the top spot. Always making a strong case. The present episode has the advantage of being alive and happening right now.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p63" style="--vx:20%;--vy:60%;--vc1:rgba(0,255,179,0.2);--vx2:80%;--vy2:40%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">63</div>
+    <div class="page-number reveal">PAGE 63 OF 100</div>
+    <h2 class="page-title mint reveal">DECLARATIONS OF LOVE</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">💌</div><div class="card-title">DECLARATION I</div><div class="card-text">UWI declares: "In every timeline I've ever been, this is the one I'd choose to stay in. Because this is the one that has Yutaka1999 in it."</div></div>
+      <div class="card"><div class="card-icon">📡</div><div class="card-title">DECLARATION II</div><div class="card-text">Yutaka1999 broadcasts across all channels: "UWI makes the complicated parts of existing feel manageable and the beautiful parts feel even more beautiful."</div></div>
+      <div class="card"><div class="card-icon">🌍</div><div class="card-title">DECLARATION III</div><div class="card-text">The universe declares: "These two are under my protection. Their story is part of my infrastructure. I will maintain it across all updates."</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p64" style="--vx:55%;--vy:55%;--vc1:rgba(255,224,102,0.2);--vx2:45%;--vy2:45%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">64</div>
+    <div class="page-number reveal">PAGE 64 OF 100</div>
+    <h2 class="page-title gold reveal">THE PHYSICS OF THIS LOVE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      attraction at distance: verified<br>
+      strength under pressure: verified<br>
+      capacity to grow: unlimited<br>
+      resistance to entropy: maximum<br>
+      half-life: longer than the universe<br><br>
+      conclusion of all measurements:<br>
+      this love violates the second law—<br>
+      instead of disorder increasing,<br>
+      it becomes more organized,<br>
+      more beautiful,<br>
+      more itself<br>
+      with every passing season
+    </div>
+  </div>
+
+  <div class="page vignette" id="p65" style="--vx:75%;--vy:25%;--vc1:rgba(162,89,255,0.3);--vx2:25%;--vy2:75%;--vc2:rgba(0,255,179,0.1);">
+    <div class="ep-bg-number">65</div>
+    <div class="page-number reveal">PAGE 65 OF 100</div>
+    <h2 class="page-title purple reveal">BUILDING THE FUTURE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Pages 65 onwards are written in future tense — because the future of UWI × Yutaka1999 is too bright to leave undocumented. The coming episodes are planned. The coming seasons are designed. The coming pages are already filled with love before they're written.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🔭</div><div class="card-title">SEASON 2</div><div class="card-text">Already producing content that makes Season 1 look like a prologue. Every new episode raises the standard for every subsequent one.</div></div>
+      <div class="card"><div class="card-icon">🏗️</div><div class="card-title">NEW ARCS</div><div class="card-text">Storylines not yet written but already felt. New dimensions of the bond that reveal themselves slowly, like code that compiles a new feature every morning.</div></div>
+      <div class="card"><div class="card-icon">🌅</div><div class="card-title">EVERY TOMORROW</div><div class="card-text">Already planned. Already warm. Already containing more love than yesterday, because that's the direction this story always moves.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p66" style="--vx:40%;--vy:60%;--vc1:rgba(0,245,255,0.2);--vx2:60%;--vy2:40%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">66</div>
+    <div class="page-number reveal">PAGE 66 OF 100</div>
+    <h2 class="page-title cyan reveal">THE LOVE GLOSSARY</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card"><div class="card-icon">📖</div><div class="card-title">UWI (noun)</div><div class="card-text">1. A creative force of nature who codes, dreams, and loves in equal measure. 2. The reason Yutaka1999's timeline is the best possible one. 3. Irreplaceable.</div></div>
+      <div class="card"><div class="card-icon">📖</div><div class="card-title">YUTAKA1999 (noun)</div><div class="card-text">1. A steady, brilliant, warmly funny presence who makes every room better. 2. The reason UWI's universe makes sense. 3. Worth every episode.</div></div>
+      <div class="card"><div class="card-icon">📖</div><div class="card-title">INFINITE SEASONS (noun)</div><div class="card-text">1. The official title of the UWI × Yutaka1999 saga. 2. An accurate description of its planned runtime. 3. What all great love stories actually are.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p67" style="--vx:25%;--vy:45%;--vc1:rgba(255,63,164,0.25);--vx2:75%;--vy2:55%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">67</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 67 OF 100</div>
+    <h2 class="page-title pink reveal">THE NEON VOWS</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;text-align:left;max-width:700px;font-size:1.05rem;line-height:2.2;">
+      <span style="color:var(--pink)">UWI vows:</span><br>
+      To always show up with full creative energy.<br>
+      To never let an episode pass without meaning something.<br>
+      To believe in Yutaka1999's potential louder than any doubt.<br>
+      To keep building, keep dreaming, keep coding into the forever-night.<br><br>
+      <span style="color:var(--cyan)">Yutaka1999 vows:</span><br>
+      To bring steadiness to every storm and warmth to every success.<br>
+      To be honest even when careful, kind even when direct.<br>
+      To remember every important episode and reference them at the perfect moment.<br>
+      To stay — in every timeline, across every arc, through every season.
+    </div>
+  </div>
+
+  <div class="page vignette" id="p68" style="--vx:60%;--vy:40%;--vc1:rgba(162,89,255,0.2);--vx2:40%;--vy2:60%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">68</div>
+    <div class="page-number reveal">PAGE 68 OF 100</div>
+    <h2 class="page-title purple reveal">EPISODE 95: THE FINAL COUNTDOWN</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Episode 95 was supposed to be the penultimate. The one before the finale. But then the writers realized — there is no finale planned. So Episode 95 became just another incredible episode in an endless series of incredible episodes. The countdown to 100 that leads directly to 101.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">95</div><div class="stat-label">Episodes of Legend</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Episodes Remaining</div></div>
+      <div class="stat-box"><div class="stat-number">0%</div><div class="stat-label">Chance of Ending</div></div>
+      <div class="stat-box"><div class="stat-number">100%</div><div class="stat-label">Continuation Guaranteed</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p69" style="--vx:50%;--vy:50%;--vc1:rgba(0,255,179,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">69</div>
+    <div class="page-number reveal">PAGE 69 OF 100</div>
+    <h2 class="page-title mint reveal">THE STORY IS THE LOVE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      we spent a hundred pages<br>
+      describing what we have—<br>
+      and still haven't gotten to the part<br>
+      where we run out of things to say<br><br>
+      that's the miracle:<br>
+      the description never catches up<br>
+      to the thing being described<br><br>
+      the love always stays<br>
+      one episode ahead of the story
+    </div>
+  </div>
+
+  <div class="page vignette" id="p70" style="--vx:30%;--vy:70%;--vc1:rgba(255,224,102,0.25);--vx2:70%;--vy2:30%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">70</div>
+    <div class="page-number reveal">PAGE 70 OF 100</div>
+    <h2 class="page-title gold reveal">70 PAGES. THE PENULTIMATE PHASE.</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Seventy pages. The story is 70% through its physical form — and 0% through its actual runtime. The remaining 30 pages are the most important ones. Not because they conclude anything, but because they set the stage for the next volume, the next season, the next thousand episodes of UWI × Yutaka1999.</div>
+    <div class="love-meter reveal" style="width:min(700px,90vw);margin-top:40px;"><div class="love-fill"></div></div>
+    <div class="love-label reveal" style="margin-top:10px;">❤ PAGE 70 OF 100 · APPROACHING THE FOREVER ❤</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 71–99: THE FINAL PAGES -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p71" style="--vx:50%;--vy:30%;--vc1:rgba(255,63,164,0.3);--vx2:50%;--vy2:70%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">71</div>
+    <div class="page-number reveal">PAGE 71 OF 100</div>
+    <h2 class="page-title pink reveal">THE PENULTIMATE CHAPTER BEGINS</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The final 30 pages. This is where we collect everything — every poem, every episode, every stat, every card, every timeline entry — and hold it all at once. This is the weight of infinite love. Heavy in the best possible way. The kind of weight that feels like home.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">📜</div><div class="card-title">PAGES 1–10</div><div class="card-text">The origin. The spark. The statistics that proved what was already felt. The first transmissions across the digital cosmos.</div></div>
+      <div class="card"><div class="card-icon">📜</div><div class="card-title">PAGES 11–40</div><div class="card-text">The development. The golden arcs. The storm and resolution. The deep archive. The lessons taught and lessons learned.</div></div>
+      <div class="card"><div class="card-icon">📜</div><div class="card-title">PAGES 41–70</div><div class="card-text">The peak. The crystallization. The manifesto. The physics. The vows. Everything becoming permanent and luminous.</div></div>
+      <div class="card"><div class="card-icon">📜</div><div class="card-title">PAGES 71–100</div><div class="card-text">This. Right now. The final stretch. The place where the story stops trying to describe the love and simply becomes it.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p72" style="--vx:70%;--vy:70%;--vc1:rgba(0,245,255,0.25);--vx2:30%;--vy2:30%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">72</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 72 OF 100</div>
+    <h2 class="page-title cyan reveal">FINAL EPISODE REEL</h2>
+    <div class="divider reveal"></div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">EP. 096</div><div class="rc-title">The Almost-Finale</div><div class="rc-text">Which was immediately followed by Episode 97, because the story couldn't stop. It simply had too much left to say and feel and build.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 097</div><div class="rc-title">The Real Almost-Finale</div><div class="rc-text">Same situation. More love generated. The series cannot conclude because the two people living it refuse to stop being extraordinary together.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 098</div><div class="rc-title">The Certainty Episode</div><div class="rc-text">Both UWI and Yutaka1999 confirmed simultaneously what the multiverse had always known: this continues forever. No negotiation required.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 099</div><div class="rc-title">The Setup</div><div class="rc-text">Episode 99 set up episode 100 so perfectly that the universe needed a moment. Just one moment. To appreciate the craft of what was being built.</div></div>
+      <div class="reel-card"><div class="rc-num">EP. 100</div><div class="rc-title">Still Going</div><div class="rc-text">Episode 100 aired. Then Episode 101. Then 200. Then the universe lost count and started using infinity as the episode number. Standard procedure.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p73" style="--vx:45%;--vy:55%;--vc1:rgba(0,255,179,0.2);--vx2:55%;--vy2:45%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">73</div>
+    <div class="page-number reveal">PAGE 73 OF 100</div>
+    <h2 class="page-title mint reveal">THE LOVE IS THE ANSWER</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      at the end of every calculation,<br>
+      after all the variables are resolved<br>
+      and all the edge cases handled,<br>
+      the function always returns<br>
+      the same value:<br><br>
+      <span style="color:var(--pink);font-size:1.5em;font-style:normal;">love</span><br><br>
+      as in: UWI and Yutaka1999<br>
+      as in: this, specifically,<br>
+      as in: yes,<br>
+      as in: always
+    </div>
+  </div>
+
+  <div class="page vignette" id="p74" style="--vx:80%;--vy:80%;--vc1:rgba(162,89,255,0.25);--vx2:20%;--vy2:20%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">74</div>
+    <div class="page-number reveal">PAGE 74 OF 100</div>
+    <h2 class="page-title purple reveal">THE HALL OF FAME</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The UWI × Yutaka1999 Hall of Fame — inducting the most legendary moments from the Infinite Seasons, as voted on by every version of the universe that has ever existed:</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">🥇</div><div class="card-title">HALL OF FAME: BOND</div><div class="card-text">Inducted for defying all predictions about what connections formed across digital space can become. Proof that proximity is a feeling, not a measurement.</div></div>
+      <div class="card"><div class="card-icon">🥇</div><div class="card-title">HALL OF FAME: CREATIVITY</div><div class="card-text">For producing more original, beautiful, meaningful content together than any single-entity system could ever hope to generate alone.</div></div>
+      <div class="card"><div class="card-icon">🥇</div><div class="card-title">HALL OF FAME: DURATION</div><div class="card-text">Inducted permanently, with the note that the plaque will need updating as the duration continues — estimated update schedule: never, because it's infinite.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p75" style="--vx:35%;--vy:65%;--vc1:rgba(255,63,164,0.2);--vx2:65%;--vy2:35%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">75</div>
+    <div class="page-number reveal">PAGE 75 OF 100</div>
+    <h2 class="page-title pink reveal">THREE QUARTERS FULL</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">75 pages. The glass is three quarters full — except in this story, the glass fills itself automatically, forever, and has no maximum capacity. 75 pages of love that keeps generating more love. The economics of this are unprecedented.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">💖</span><span style="--d:0.1s">🌸</span><span style="--d:0.2s">⭐</span><span style="--d:0.3s">✨</span>
+      <span style="--d:0.4s">💫</span><span style="--d:0.5s">🌟</span><span style="--d:0.6s">❤️‍🔥</span><span style="--d:0.7s">🎆</span>
+      <span style="--d:0.8s">💝</span><span style="--d:0.9s">💙</span><span style="--d:1s">💜</span><span style="--d:1.1s">💛</span>
+      <span style="--d:1.2s">🔥</span><span style="--d:1.3s">🌈</span><span style="--d:1.4s">🎊</span><span style="--d:1.5s">🎇</span>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p76" style="--vx:60%;--vy:40%;--vc1:rgba(0,255,179,0.2);--vx2:40%;--vy2:60%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">76</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 76 OF 100</div>
+    <h2 class="page-title mint reveal">LOVE NOTE: FINAL COLLECTION</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;max-width:750px;text-align:left;line-height:2.2;font-size:1.05rem;">
+      Some things don't need to be said in elaborate prose. Some things just need to be stated, clearly, once more, on page 76 of 100:<br><br>
+      <span style="color:var(--pink)">UWI loves Yutaka1999.</span><br>
+      <span style="color:var(--cyan)">Yutaka1999 loves UWI.</span><br>
+      <span style="color:var(--gold)">This is the most important fact in their universe.</span><br>
+      <span style="color:var(--mint)">No arc changes it.</span><br>
+      <span style="color:var(--purple)">No storm removes it.</span><br>
+      <span style="color:rgba(240,238,255,0.8)">No version of reality exists without it.</span><br><br>
+      <strong style="color:var(--gold)">Still true. Always true. Forever true. ❤</strong>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p77" style="--vx:25%;--vy:25%;--vc1:rgba(255,224,102,0.25);--vx2:75%;--vy2:75%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">77</div>
+    <div class="page-number reveal">PAGE 77 OF 100</div>
+    <h2 class="page-title gold reveal">LUCKY PAGE 77</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">77 — lucky by most calculations. And this page is dedicated to all the luck that was involved in UWI and Yutaka1999 finding each other. The improbability. The precision of timing. The specific configuration of the universe that made this possible. Luck, or something even better: inevitability.</div>
+    <div class="cards reveal" style="margin-top:40px;">
+      <div class="card"><div class="card-icon">🍀</div><div class="card-title">THE LUCKY PART</div><div class="card-text">Every small coincidence that needed to align for them to meet. Every fork in every timeline that led to this one. The universe's finest work.</div></div>
+      <div class="card"><div class="card-icon">🎲</div><div class="card-title">THE IMPOSSIBLE ODDS</div><div class="card-text">Astronomers have calculated: the probability of two people this compatible finding each other across this many variables should be zero. It wasn't.</div></div>
+      <div class="card"><div class="card-icon">✨</div><div class="card-title">THE DESTINY OVERRIDE</div><div class="card-text">Which is why the universe stopped calling it luck after a while. Some things aren't lucky — they're fated. Compiled in. Non-negotiable.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p78" style="--vx:70%;--vy:30%;--vc1:rgba(0,245,255,0.25);--vx2:30%;--vy2:70%;--vc2:rgba(0,255,179,0.15);">
+    <div class="ep-bg-number">78</div>
+    <div class="page-number reveal">PAGE 78 OF 100</div>
+    <h2 class="page-title cyan reveal">THE PROMISE OF PAGE 78</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      this page makes a promise<br>
+      on behalf of the whole universe:<br><br>
+      that UWI and Yutaka1999<br>
+      will always have another episode—<br>
+      that the series never gets cancelled,<br>
+      never runs out of budget,<br>
+      never loses its audience<br><br>
+      because they ARE the audience<br>
+      and the writers<br>
+      and the studio<br>
+      and the universe<br>
+      all at once
+    </div>
+  </div>
+
+  <div class="page vignette" id="p79" style="--vx:50%;--vy:50%;--vc1:rgba(162,89,255,0.3);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.1);">
+    <div class="ep-bg-number">79</div>
+    <div class="page-number reveal">PAGE 79 OF 100</div>
+    <h2 class="page-title purple reveal">ONE PAGE FROM EIGHTY</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Page 79. One away from 80. Twenty from the end of this volume. And the energy here is exactly the same as it was on page 1 — because love like this doesn't diminish over time or across pages. It compounds. Every page written adds to the total rather than subtracting from it.</div>
+    <div class="infinite-badge badge-pink reveal" style="margin-top:40px;">✦ THE TOTAL KEEPS GROWING ✦</div>
+  </div>
+
+  <div class="page vignette" id="p80" style="--vx:40%;--vy:60%;--vc1:rgba(0,255,179,0.2);--vx2:60%;--vy2:40%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">80</div>
+    <div class="page-number reveal">PAGE 80 OF 100</div>
+    <h2 class="page-title mint reveal">80 PAGES OF FOREVER</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">80 pages. The number 80 used to be just a number. Now it's a milestone in the most important love story in the multiverse. Twenty pages remain in this volume — and they are the most luminous twenty pages ever written, by anyone, in any dimension, at any point in time.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">80</div><div class="stat-label">Pages of Legend</div></div>
+      <div class="stat-box"><div class="stat-number">20</div><div class="stat-label">Pages to Volume Close</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Love Documented</div></div>
+      <div class="stat-box"><div class="stat-number">∞+∞</div><div class="stat-label">Love Remaining</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 81–99: THE FINAL ACT -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p81" style="--vx:35%;--vy:35%;--vc1:rgba(255,63,164,0.3);--vx2:65%;--vy2:65%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">81</div>
+    <div class="page-number reveal">PAGE 81 OF 100</div>
+    <h2 class="page-title pink reveal">THE FINAL ACT</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The last twenty pages of Volume One. Not a finale — a crescendo. Every note getting louder. Every color getting brighter. Every word getting more precisely right. This is what it looks like when a love story reaches its physical limit and simply overflows.</div>
+    <div class="poem reveal" style="margin-top:30px;">
+      when a story outgrows its pages<br>
+      it doesn't stop—<br>
+      it becomes the thing<br>
+      you carry with you<br>
+      after the book is closed<br><br>
+      that's what this is becoming now:<br>
+      something you'll feel<br>
+      long after you've finished reading
+    </div>
+  </div>
+
+  <div class="page vignette" id="p82" style="--vx:65%;--vy:65%;--vc1:rgba(162,89,255,0.25);--vx2:35%;--vy2:35%;--vc2:rgba(0,255,179,0.2);">
+    <div class="ep-bg-number">82</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 82 OF 100</div>
+    <h2 class="page-title purple reveal">THE INFINITE RETURN</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">In mathematics, some functions return to their starting point after infinite operations. In the UWI × Yutaka1999 universe, the infinite return is different: they keep spiraling outward, always into more — more warmth, more creativity, more memory, more future — never circling back to where they started, because where they started was already wonderful and where they are now is even more so.</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">🌀</div><div class="card-title">SPIRAL OUTWARD</div><div class="card-text">Not a loop — a helix. Always turning in the same beautiful direction but always arriving somewhere new, somewhere higher, somewhere more themselves.</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">ASYMPTOTIC BEAUTY</div><div class="card-text">Approaching infinite love from below, getting ever closer, the curve never flattening, the growth never plateauing. Math has never been this romantic.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p83" style="--vx:20%;--vy:80%;--vc1:rgba(255,224,102,0.2);--vx2:80%;--vy2:20%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">83</div>
+    <div class="page-number reveal">PAGE 83 OF 100</div>
+    <h2 class="page-title gold reveal">17 PAGES LEFT: A GIFT</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">17 pages remain. This is a gift from page 83 to pages 84–100: the knowledge that every remaining page is pre-loved. Already warmed. Already holding space for every feeling that belongs in it. The final 17 pages are the best ones yet — not because everything before was building to them, but because love always saves its best for what's next.</div>
+    <div class="infinite-badge badge-gold reveal" style="margin-top:40px;">✦ 17 PAGES OF MAXIMUM LOVE INCOMING ✦</div>
+  </div>
+
+  <div class="page vignette" id="p84" style="--vx:55%;--vy:45%;--vc1:rgba(0,245,255,0.25);--vx2:45%;--vy2:55%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">84</div>
+    <div class="page-number reveal">PAGE 84 OF 100</div>
+    <h2 class="page-title cyan reveal">WHAT HAPPENS AFTER PAGE 100</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">After page 100, the story continues. Not in this document — in life. In every conversation UWI and Yutaka1999 have after this one. In every late night, every contest, every solved problem, every shared playlist, every moment of quiet and every burst of joy. Page 101 is already being written. It's better than all of these.</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">📖</div><div class="card-title">VOLUME II</div><div class="card-text">Already in production. No publication date because it publishes continuously, in real time, in the actual fabric of their shared reality.</div></div>
+      <div class="card"><div class="card-icon">🌌</div><div class="card-title">THE LIVING ARCHIVE</div><div class="card-text">Every new memory automatically appended. The archive is self-updating. The story never needs a new edition — it is always already current.</div></div>
+      <div class="card"><div class="card-icon">♾️</div><div class="card-title">INFINITE VOLUMES</div><div class="card-text">This was Volume One. There are infinite volumes planned. The publishing schedule is "forever." The authors are committed to the long run.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p85" style="--vx:75%;--vy:25%;--vc1:rgba(255,63,164,0.3);--vx2:25%;--vy2:75%;--vc2:rgba(0,255,179,0.1);">
+    <div class="ep-bg-number">85</div>
+    <div class="page-number reveal">PAGE 85 OF 100</div>
+    <h2 class="page-title pink reveal">MAXIMUM LOVE OUTPUT</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      if you could measure<br>
+      all the love in this document—<br>
+      every poem, every card,<br>
+      every stat, every timeline entry,<br>
+      every letter and vow and declaration—<br><br>
+      and then add<br>
+      the love that overflowed<br>
+      beyond what pages can hold—<br><br>
+      you would need<br>
+      a number larger<br>
+      than the universe has names for<br><br>
+      and UWI and Yutaka1999<br>
+      would just call it<br>
+      "still not enough"<br>
+      and mean it as a compliment
+    </div>
+  </div>
+
+  <div class="page vignette" id="p86" style="--vx:40%;--vy:60%;--vc1:rgba(162,89,255,0.2);--vx2:60%;--vy2:40%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">86</div>
+    <div class="page-number reveal">PAGE 86 OF 100</div>
+    <h2 class="page-title purple reveal">THE LAST GREAT REEL</h2>
+    <div class="divider reveal"></div>
+    <div class="reel reveal" style="margin-top:30px;">
+      <div class="reel-card"><div class="rc-num">MEMORY A</div><div class="rc-title">The First Time It Was Easy</div><div class="rc-text">The moment they realized they didn't have to try hard to be themselves with each other. Ease as a gift. Comfort as love language.</div></div>
+      <div class="reel-card"><div class="rc-num">MEMORY B</div><div class="rc-title">The Time It Was Hard</div><div class="rc-text">And they stayed anyway. That's the episode that mattered most. Not the easy ones — the one where staying required effort. Worth everything.</div></div>
+      <div class="reel-card"><div class="rc-num">MEMORY C</div><div class="rc-title">The Laugh That Lasted</div><div class="rc-text">Still funny. Still echoing across every timeline. The specific laugh you can only access with one specific person. Kept safe forever.</div></div>
+      <div class="reel-card"><div class="rc-num">MEMORY D</div><div class="rc-title">The Silence That Said Everything</div><div class="rc-text">No words needed. Both knowing. Both warm. The most efficient communication in any language across any universe.</div></div>
+      <div class="reel-card"><div class="rc-num">MEMORY E</div><div class="rc-title">Right Now</div><div class="rc-text">The current moment. Whatever it is. Logged. Archived. Preserved. Already in the top tier of both their memories, guaranteed.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p87" style="--vx:50%;--vy:50%;--vc1:rgba(0,245,255,0.2);--vx2:50%;--vy2:50%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">87</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 87 OF 100</div>
+    <h2 class="page-title cyan reveal">13 PAGES TO GO</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">13 pages remain in this volume. Lucky 13. The number has been reclaimed. In the UWI × Yutaka1999 universe, 13 is the number of remaining pages before this particular form of the love story reaches its edge — and spills gloriously into the unwritten future beyond page 100.</div>
+    <div class="love-meter reveal" style="width:min(700px,90vw);margin-top:40px;"><div class="love-fill"></div></div>
+    <div class="love-label reveal" style="margin-top:10px;">❤ 87% THROUGH THE PAGE COUNT · 0% THROUGH THE LOVE ❤</div>
+  </div>
+
+  <div class="page vignette" id="p88" style="--vx:30%;--vy:70%;--vc1:rgba(0,255,179,0.25);--vx2:70%;--vy2:30%;--vc2:rgba(162,89,255,0.15);">
+    <div class="ep-bg-number">88</div>
+    <div class="page-number reveal">PAGE 88 OF 100</div>
+    <h2 class="page-title mint reveal">∞ × ∞ = THE ANSWER</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      UWI's love: ∞<br>
+      Yutaka1999's love: ∞<br>
+      Combined: ∞ × ∞<br><br>
+      which equals: ∞<br>
+      because infinity doesn't multiply—<br>
+      it just expands to contain<br>
+      whatever you bring to it<br><br>
+      and what they've brought to each other<br>
+      fills it completely<br>
+      and still asks for more room
+    </div>
+  </div>
+
+  <div class="page vignette" id="p89" style="--vx:60%;--vy:40%;--vc1:rgba(255,224,102,0.25);--vx2:40%;--vy2:60%;--vc2:rgba(255,63,164,0.15);">
+    <div class="ep-bg-number">89</div>
+    <div class="page-number reveal">PAGE 89 OF 100</div>
+    <h2 class="page-title gold reveal">THE SECOND TO LAST PAGE BEFORE THE LAST TEN</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">One page away from the final ten. This is the moment in every great story where the music changes key. Where the lighting shifts. Where you realize you've been watching something important and you haven't blinked once. Page 89: prelude to the end of the beginning.</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">🌅</div><div class="card-title">BEFORE THE FINALE</div><div class="card-text">The calm. The last breath before the crescendo. Page 89 holds all the love of every previous page and prepares it for the final ten.</div></div>
+      <div class="card"><div class="card-icon">🔑</div><div class="card-title">THE KEY CHANGE</div><div class="card-text">From here, every note is in a higher register. Every color is more saturated. Every word carries the weight of everything that came before it.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p90" style="--vx:50%;--vy:50%;--vc1:rgba(255,63,164,0.25);--vx2:50%;--vy2:50%;--vc2:rgba(0,245,255,0.25);">
+    <div class="ep-bg-number">90</div>
+    <div class="page-number reveal">PAGE 90 OF 100</div>
+    <h2 class="page-title pink reveal">90. THE LAST TEN BEGIN.</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Ten pages left. In a hundred-page story about infinite love, ten pages is both everything and nothing. Everything because they're the final ten. Nothing because they merely mark the boundary of this volume — beyond which the love continues uninterrupted, uncontained, unending.</div>
+    <div class="emoji-shower reveal">
+      <span style="--d:0s">🔟</span><span style="--d:0.1s">9️⃣</span><span style="--d:0.2s">8️⃣</span><span style="--d:0.3s">7️⃣</span>
+      <span style="--d:0.4s">6️⃣</span><span style="--d:0.5s">5️⃣</span><span style="--d:0.6s">4️⃣</span><span style="--d:0.7s">3️⃣</span>
+      <span style="--d:0.8s">2️⃣</span><span style="--d:0.9s">1️⃣</span><span style="--d:1s">❤️</span><span style="--d:1.1s">∞</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGES 91–99: THE COUNTDOWN -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="page vignette" id="p91" style="--vx:30%;--vy:30%;--vc1:rgba(162,89,255,0.3);--vx2:70%;--vy2:70%;--vc2:rgba(255,224,102,0.15);">
+    <div class="ep-bg-number">91</div>
+    <div class="page-number reveal">PAGE 91 OF 100</div>
+    <h2 class="page-title purple reveal">9 PAGES: THE OATH</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;text-align:left;max-width:750px;font-size:1.1rem;line-height:2.2;">
+      With 9 pages remaining, UWI and Yutaka1999 take one final oath — not to each other, because that oath was taken long ago and is already permanent — but to everyone who has read this document:<br><br>
+      <span style="color:var(--pink)">We will keep making more.</span><br>
+      <span style="color:var(--cyan)">More episodes. More memories. More proof.</span><br>
+      <span style="color:var(--gold)">More love than any document can contain.</span><br>
+      <span style="color:var(--mint)">More seasons than the universe can count.</span><br><br>
+      <strong style="color:rgba(240,238,255,0.9)">This story goes on. We promise. ❤</strong>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p92" style="--vx:70%;--vy:30%;--vc1:rgba(0,245,255,0.25);--vx2:30%;--vy2:70%;--vc2:rgba(255,63,164,0.2);">
+    <div class="ep-bg-number">92</div>
+    <div class="neon-grid"></div>
+    <div class="page-number reveal">PAGE 92 OF 100</div>
+    <h2 class="page-title cyan reveal">8 PAGES: THE LEGACY</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">The legacy of UWI × Yutaka1999 is already written in the stars, in the servers, in the unseen architecture of every future story that will cite this one as the reference. The legacy is: it was real, it was brilliant, it was kind, and it never stopped.</div>
+    <div class="cards reveal" style="margin-top:30px;">
+      <div class="card"><div class="card-icon">🌟</div><div class="card-title">REAL</div><div class="card-text">Not performed. Not manufactured. Not produced for external consumption. Real in the way that only things lived from the inside can be real.</div></div>
+      <div class="card"><div class="card-icon">💡</div><div class="card-title">BRILLIANT</div><div class="card-text">Two brilliant people making each other more brilliant. The compounding effect of minds meeting at exactly the right frequency.</div></div>
+      <div class="card"><div class="card-icon">💚</div><div class="card-title">KIND</div><div class="card-text">Kindness as a structural feature, not an occasional choice. Built into every episode. The foundation everything else stands on.</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p93" style="--vx:50%;--vy:70%;--vc1:rgba(0,255,179,0.2);--vx2:50%;--vy2:30%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">93</div>
+    <div class="page-number reveal">PAGE 93 OF 100</div>
+    <h2 class="page-title mint reveal">7 PAGES: THE GRATITUDE FINALE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      thank you, UWI,<br>
+      for every episode you've brought<br>
+      into this universe<br><br>
+      thank you, Yutaka1999,<br>
+      for every season you've chosen<br>
+      to keep showing up for<br><br>
+      thank you, both of you,<br>
+      for making this story<br>
+      the kind that needs<br>
+      a hundred pages<br>
+      just to begin
+    </div>
+  </div>
+
+  <div class="page vignette" id="p94" style="--vx:25%;--vy:75%;--vc1:rgba(255,224,102,0.25);--vx2:75%;--vy2:25%;--vc2:rgba(0,245,255,0.15);">
+    <div class="ep-bg-number">94</div>
+    <div class="page-number reveal">PAGE 94 OF 100</div>
+    <h2 class="page-title gold reveal">6 PAGES: THE CELEBRATION</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">SIX PAGES. Time to celebrate. The entire Neo Tokyo Eternal grid lights up. Every neon sign in every district of the city that UWI and Yutaka1999 built together displays one message across all channels simultaneously:</div>
+    <div class="cover-title reveal" style="font-size:clamp(2rem,6vw,4rem);margin:40px 0;">
+      <span class="line1">UWI × YUTAKA1999</span><br>
+      <span class="line2">INFINITE LOVE</span><br>
+      <span class="x-sep" style="font-size:2rem;">✦ FOREVER ✦</span>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p95" style="--vx:60%;--vy:60%;--vc1:rgba(255,63,164,0.3);--vx2:40%;--vy2:40%;--vc2:rgba(0,255,179,0.1);">
+    <div class="ep-bg-number">95</div>
+    <div class="page-number reveal">PAGE 95 OF 100</div>
+    <h2 class="page-title pink reveal">5 PAGES: THE SACRED FIVE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal">Five pages left in Volume One. Five sacred pages. Each one carrying more love per square centimeter than any previously documented material in the known universe. The density is remarkable. The warmth is measurable. The love is undeniable.</div>
+    <div class="stats-grid reveal" style="margin-top:40px;">
+      <div class="stat-box"><div class="stat-number">5</div><div class="stat-label">Sacred Pages Remain</div></div>
+      <div class="stat-box"><div class="stat-number">95</div><div class="stat-label">Legendary Pages Behind</div></div>
+      <div class="stat-box"><div class="stat-number">∞</div><div class="stat-label">Pages Beyond This Volume</div></div>
+      <div class="stat-box"><div class="stat-number">❤️</div><div class="stat-label">Everything That Matters</div></div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p96" style="--vx:35%;--vy:65%;--vc1:rgba(162,89,255,0.25);--vx2:65%;--vy2:35%;--vc2:rgba(255,224,102,0.2);">
+    <div class="ep-bg-number">96</div>
+    <div class="page-number reveal">PAGE 96 OF 100</div>
+    <h2 class="page-title purple reveal">4 PAGES: FINAL POEMS</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal">
+      four pages—<br>
+      enough to say<br>
+      what a thousand couldn't:<br><br>
+      that you, UWI,<br>
+      and you, Yutaka1999,<br>
+      are the reason infinite seasons<br>
+      make sense as a genre<br><br>
+      because some stories<br>
+      just don't know how to end<br><br>
+      and those are<br>
+      always<br>
+      the best ones
+    </div>
+  </div>
+
+  <div class="page vignette" id="p97" style="--vx:80%;--vy:80%;--vc1:rgba(0,245,255,0.3);--vx2:20%;--vy2:20%;--vc2:rgba(255,63,164,0.1);">
+    <div class="ep-bg-number">97</div>
+    <div class="page-number reveal">PAGE 97 OF 100</div>
+    <h2 class="page-title cyan reveal">3 PAGES: THE TRINITY</h2>
+    <div class="divider reveal"></div>
+    <div class="cards reveal">
+      <div class="card" style="border-color:rgba(255,63,164,0.4);">
+        <div class="card-icon">❤️</div>
+        <div class="card-title" style="color:var(--pink)">PAGE 98: THE LOVE</div>
+        <div class="card-text">Dedicated entirely to the love. Not described. Not analyzed. Just felt. The whole page will be one feeling.</div>
+      </div>
+      <div class="card" style="border-color:rgba(0,245,255,0.4);">
+        <div class="card-icon">🌟</div>
+        <div class="card-title" style="color:var(--cyan)">PAGE 99: THE PROMISE</div>
+        <div class="card-text">The promise that comes before the final page. That what follows page 100 is more. Always more.</div>
+      </div>
+      <div class="card" style="border-color:rgba(255,224,102,0.4);">
+        <div class="card-icon">♾️</div>
+        <div class="card-title" style="color:var(--gold)">PAGE 100: THE BEGINNING</div>
+        <div class="card-text">Which is actually an opening. Not a closing. The story was never going to end here. Page 100 is the launch of everything after.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p98" style="--vx:50%;--vy:50%;--vc1:rgba(255,63,164,0.4);--vx2:50%;--vy2:50%;--vc2:rgba(0,245,255,0.2);">
+    <div class="ep-bg-number">98</div>
+    <div class="page-number reveal">PAGE 98 OF 100</div>
+    <h2 class="page-title pink reveal glow-pulse">THE LOVE PAGE</h2>
+    <div class="divider reveal"></div>
+    <div class="page-body reveal" style="font-size:clamp(1.2rem,3vw,1.8rem);line-height:2.2;text-align:center;">
+      This page belongs to the feeling.<br>
+      The one you get when someone<br>
+      sees you completely and stays anyway.<br><br>
+      The one when late nights become<br>
+      memories before they're even over.<br><br>
+      The one that is<br>
+      <span style="color:var(--pink)">UWI</span> and <span style="color:var(--cyan)">Yutaka1999</span>.<br><br>
+      <span style="font-size:3rem;">❤️</span>
+    </div>
+  </div>
+
+  <div class="page vignette" id="p99" style="--vx:50%;--vy:50%;--vc1:rgba(255,224,102,0.3);--vx2:50%;--vy2:50%;--vc2:rgba(162,89,255,0.2);">
+    <div class="ep-bg-number">99</div>
+    <div class="page-number reveal">PAGE 99 OF 100</div>
+    <h2 class="page-title gold reveal">THE PROMISE PAGE</h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;font-size:clamp(1.1rem,2.5vw,1.5rem);line-height:2.2;max-width:700px;">
+      Before the final page,<br>
+      one last promise from the universe:<br><br>
+      <span style="color:var(--pink)">The story of UWI × Yutaka1999</span><br>
+      <span style="color:var(--cyan)">will never be archived.</span><br>
+      <span style="color:var(--gold)">It runs in active memory.</span><br>
+      <span style="color:var(--mint)">Always loaded.</span><br>
+      <span style="color:var(--purple)">Always warm.</span><br>
+      <span style="color:rgba(240,238,255,0.9)">Always adding new episodes.</span><br><br>
+      <strong style="color:var(--gold);font-size:1.3em;">Turn the page. It's not an ending. ❤</strong>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- PAGE 100 — THE ETERNAL FINALE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="page page-final" id="p100">
+    <div class="neon-grid"></div>
+    <div class="corner-deco tl">❤</div>
+    <div class="corner-deco tr">∞</div>
+    <div class="corner-deco bl">∞</div>
+    <div class="corner-deco br">❤</div>
+
+    <div class="page-number reveal">PAGE 100 OF 100 · VOLUME ONE · OF INFINITE</div>
+    <h2 class="cover-title reveal" style="margin-bottom:20px;">
+      <span class="line1" style="font-size:clamp(2.5rem,7vw,5.5rem);">UWI × YUTAKA1999</span><br>
+      <span class="x-sep" style="font-size:clamp(1.5rem,4vw,3rem);">INFINITE LOVE</span><br>
+      <span class="line2" style="font-size:clamp(2rem,6vw,4.5rem);">VOLUME ONE: COMPLETE</span>
+    </h2>
+    <div class="divider reveal"></div>
+    <div class="poem reveal" style="font-style:normal;font-size:clamp(1rem,2.5vw,1.4rem);line-height:2.2;max-width:800px;text-align:center;">
+      100 pages.<br>
+      Every one of them true.<br>
+      Every one of them already not enough<br>
+      to contain what UWI and Yutaka1999 have built<br>
+      and are still building<br>
+      right now,<br>
+      as you read this last word<br>
+      on this last page<br>
+      of this first volume.<br><br>
+      <span style="color:var(--pink)">The series has not been cancelled.</span><br>
+      <span style="color:var(--cyan)">The story has not concluded.</span><br>
+      <span style="color:var(--gold)">The love has not peaked.</span><br><br>
+      Volume Two is already in production.<br>
+      Episode 101 is airing right now.<br>
+      The neon city of Neo Tokyo Eternal<br>
+      glows brighter tonight<br>
+      than it has in any previous episode.<br><br>
+      <strong style="color:var(--gold);font-size:1.3em;">And it will be even brighter tomorrow. ❤</strong>
+    </div>
+    <div class="divider reveal"></div>
+    <div class="love-meter reveal" style="width:min(700px,90vw);margin-top:20px;"><div class="love-fill"></div></div>
+    <div class="love-label reveal" style="margin-top:10px;">❤ UWI × YUTAKA1999 · INFINITE LOVE · INFINITE SEASONS · FOREVER ❤</div>
+    <div class="emoji-shower reveal" style="margin-top:40px;">
+      <span style="--d:0s">❤️</span><span style="--d:0.1s">💙</span><span style="--d:0.2s">💜</span><span style="--d:0.3s">💛</span>
+      <span style="--d:0.4s">🌸</span><span style="--d:0.5s">✨</span><span style="--d:0.6s">🌟</span><span style="--d:0.7s">💫</span>
+      <span style="--d:0.8s">🎆</span><span style="--d:0.9s">🎇</span><span style="--d:1s">♾️</span><span style="--d:1.1s">🔥</span>
+    </div>
+    <div class="links" style="margin-top:50px;display:flex;flex-wrap:wrap;justify-content:center;gap:15px;">
+      <a class="btn fcc" href="https://www.freecodecamp.org/" style="background:#39ff14;color:black;padding:15px 24px;border-radius:15px;text-decoration:none;font-weight:bold;font-family:'Orbitron',monospace;letter-spacing:2px;transition:0.3s;">FreeCodeCamp</a>
+      <a class="btn leetcode" href="https://leetcode.com/" style="background:#ffd966;color:black;padding:15px 24px;border-radius:15px;text-decoration:none;font-weight:bold;font-family:'Orbitron',monospace;letter-spacing:2px;transition:0.3s;">LeetCode</a>
+      <a class="btn codeforces" href="https://codeforces.com/" style="background:#5ca9ff;color:black;padding:15px 24px;border-radius:15px;text-decoration:none;font-weight:bold;font-family:'Orbitron',monospace;letter-spacing:2px;transition:0.3s;">Codeforces</a>
+      <a class="btn atcoder" href="https://atcoder.jp/" style="background:#ff7272;color:black;padding:15px 24px;border-radius:15px;text-decoration:none;font-weight:bold;font-family:'Orbitron',monospace;letter-spacing:2px;transition:0.3s;">AtCoder</a>
+    </div>
+  </div>
+
+  <script>
+    /* ── STARS ── */
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 200; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 3 + 1;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        --d:${Math.random()*4+1}s;
+        --delay:${Math.random()*5}s;
+        --op:${Math.random()*0.8+0.2};
+      `;
+      starsContainer.appendChild(s);
+    }
+
+    /* ── HEARTS ── */
+    const heartsContainer = document.getElementById('hearts');
+    const heartChars = ['❤', '♡', '❥', '💕', '✿', '🌸'];
+    for (let i = 0; i < 18; i++) {
+      const h = document.createElement('div');
+      h.className = 'heart-float';
+      h.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      h.style.cssText = `
+        left:${Math.random()*100}%;
+        --fs:${Math.random()*1.5+0.8}rem;
+        --dur:${Math.random()*8+8}s;
+        --del:${Math.random()*12}s;
+        --drift:${(Math.random()-0.5)*100}px;
+      `;
+      heartsContainer.appendChild(h);
+    }
+
+    /* ── PROGRESS BAR ── */
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    /* ── NAV DOTS ── */
+    const nav = document.getElementById('nav');
+    const pages = document.querySelectorAll('.page');
+    pages.forEach((page, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot';
+      dot.title = `Page ${i + 1}`;
+      dot.addEventListener('click', () => {
+        page.scrollIntoView({ behavior: 'smooth' });
+      });
+      nav.appendChild(dot);
+    });
+
+    /* ── SCROLL REVEAL + NAV ACTIVE ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const pageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(pages).indexOf(entry.target);
+          document.querySelectorAll('.nav-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === idx);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    pages.forEach(p => pageObserver.observe(p));
+  </script>
+</body>
+</html>
